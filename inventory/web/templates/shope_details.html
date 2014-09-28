@@ -1,0 +1,25 @@
+<div id="add_shope" class="form_container single_column_container">
+	<h4> Please fill your shop details to proceed </h4>
+	<form name="add_shope" class="add_shope">
+		<div class="control"> 
+			<label>Shope Name</label>
+			<input type="text" ng-model="name" />
+		</div>
+		<div class="control"> 
+			<label>Address</label>
+			<input type="text" ng-model="address" />
+		</div>
+		<div class="control"> 
+			<label>Email</label>
+			<input type="text" ng-model="email" />
+		</div>
+		<div class="control"> 
+			<label ng-hide="is_edit">Contact No:</label>
+			<input type="text" ng-model="contact_no">
+		</div>		
+		<div class="button_control">
+			<p class="error_msg">[[validation_message]]</p>
+			<input type="submit" value="Create" ng-click="save_shope()">
+		</div>
+	</form>
+</div>

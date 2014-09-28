@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block body_id %}products{% endblock %}
+{% block title %} Products {% endblock title%}
+{% block controller %} ng-controller="ProductController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_product.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2> Products </h2>
+	<button ng-click="create_product()" class="create_new">Create</button>
+	<div class="search">
+		<label>Search Product</label>
+		<input type="text" name="product_name" ng-model="product_name" ng-change="get_product_list()" >
+		<p class="error_msg">[[no_product_msg]]</p>
+	</div>
+	<table ng-show="products.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>Category</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="product in products">
+			<td>[[product.name]]</td>
+			<td>[[product.category_name]]</td>
+			<td><a href="" ng-click="edit_product(product)">Edit</a></td>
+			<td><a href="" ng-click="delete_product(product)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="products.length > 0">
+		{% include 'pagination_div.html' %}
+	</div>	
+
+{% endblock content %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block body_id %}purchase_return{% endblock %}
+{% block title %} Purchase Return View {% endblock title%}
+{% block controller %} ng-controller="PurchaseReturnViewController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'show_transaction_details.html' %} 
+           
+{% endblock %}
+{% block extrahead %}
+	<script>
+		$(function() {
+			$( "#invoice_date" ).datepicker();
+			$( "#cheque_date" ).datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+	
+	<h2> Purchase Return </h2>
+	<div class="form_container wide_form">
+		<form name="purchase_return_form">	
+			<div class="control">
+				<label>Reference No:</label>
+				<input type="text" ng-model="purchase_return_invoice" ng-change="get_purchase_return_details()">
+			</div>		
+			<div class="control">
+				<label>Invoice No:</label>
+				<label>[[purchase_return.invoice_no]]</label>
+			</div>	
+			<div class="control">
+				<label>Invoice Date:</label>
+				<label>[[purchase_return.invoice_date]]</label>
+			</div>	
+			<div class="control">
+				<label>Purchase:</label>
+				<label>[[purchase_return.purchase_invoice]]</label>
+			</div>
+			<div class="control">
+				<label>Supplier:</label>
+				<label>[[purchase_return.supplier]]</label>
+			</div>
+			
+			<br/>
+			<table class="table list_table table-striped rules" ng-show="purchase_return.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Stock </th>
+					<th> Purchased Qty </th>
+					<th> Uom </th>
+					<th> Purchase Price </th>
+					<th> Quantity </th>
+					<th> Net Amount </th>
+				</tr>
+				<tr ng-repeat="item in purchase_return.items">
+					<td>[[$index+1]]</td>
+					<td>[[item.name]]</td>
+					<td>[[item.code]]</td>
+					<td>[[item.batch_name]]</td>
+					<td>[[item.stock]]</td>
+					<td>[[item.purchased_qty]]</td>
+					<td>[[item.purchase_unit]]</td>
+					<td>[[item.purchase_price]]</td>
+					<td>[[item.quantity]]</td>
+					<td>[[item.net_amount]]</td>
+				</tr> 
+			</table>	
+			<hr ng-show="purchase_return.items.length > 0">		
+			
+			<div class="control">
+				<label>Grant Total:</label>
+				<label>[[purchase_return.grant_total]]</label>
+			</div>
+			<div class="control">
+				<label>Discount:</label>
+				<label>[[purchase_return.discount]]</label>
+			</div>
+			<div class="control">
+				<label>Purchase Tax:</label>
+				<label>[[purchase_return.purchase_tax]]</label>
+			</div>
+		</form>
+	</div>
+{% endblock content%}

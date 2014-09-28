@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block body_id %}item_list{% endblock %}
+{% block title %} Items {% endblock title%}
+{% block controller %} ng-controller="ItemController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_item.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2>Items</h2>
+	<button class="create_new" ng-click="create_item()">Create</button>
+	<div class="search">
+		<label>Search Item</label>
+		<input type="text" name="item_name" ng-model="item_name" ng-change="get_items_list()" >
+		<p class="error_msg">[[no_item_msg]]</p>
+	</div>
+	<table ng-show="items.length > 0" class="table list_table">
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			<th>Code</th>
+			<th>Product</th>
+			<th>Brand</th>
+			<th>Size</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="item in visible_list">
+			<td>[[$index+1]]</td>
+			<td>[[item.name]]</td>
+			<td>[[item.code]]</td>
+			<td>[[item.product_name]]</td>			
+			<td>[[item.brand_name]]</td>
+			<td>[[item.size]]</td>
+			<td><a href="" ng-click="edit_item_details(item)">Edit</a></td>
+			<td><a href="" ng-click="delete_item(item)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="items.length > 0">
+		{% include 'pagination_div.html' %}
+	</div>
+
+{% endblock content %}

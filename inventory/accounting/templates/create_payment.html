@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %} Create Payment {% endblock title%}
+{% block body_id %}create_payment{% endblock %}
+{% block controller %} ng-controller="PaymentController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}   
+	{% include 'show_transaction_details.html' %}   
+{% endblock %}
+{% block extrahead %}
+	 <script>
+		$(function() {
+		$( "#payment_date" ).datepicker();
+		$( "#cheque_date" ).datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+
+	<h2> Payment </h2>
+
+	<div class="form_container single_column_container">
+		<form>
+			<div class="control">
+				<label>Date</label>
+				<input type="text" name="payment_date" id="payment_date" ng-model="payment.transaction_date" value="payment_date">
+			</div>
+			<div class="control">
+				<label>Amount</label>
+				<input type="text" name="payment_amount" ng-model="payment.amount">
+			</div>
+			<div class="control">
+				<label>Payment Mode</label>
+				<input type="radio" ng-model="payment.mode" value="cash"/>
+				<label class="label_radio">Cash</label>
+				<input type="radio" ng-model="payment.mode" value="card"/>
+				<label class="label_radio">Card</label>
+				<input type="radio" ng-model="payment.mode" value="cheque"/>
+				<label class="label_radio">Cheque</label>
+			</div>
+			<div class="control" ng-show="payment.mode == 'card' || payment.mode == 'cheque'">
+				<label>Bank Account</label>
+				<select ng-model="payment.bank_account" ng-options="bank_account.id as bank_account.name for bank_account in bank_accounts"></select>
+			</div>
+			<div ng-show="payment.mode == 'card'">
+				<div class="control">
+					<label>Card Number</label>
+					<input type="text" name="card_no" ng-model="payment.card_no">
+				</div>
+				<div class="control">
+					<label>Card Holder Name</label>
+					<input type="text" name="card_holder_name" ng-model="payment.card_holder_name">
+				</div>
+				<div class="control">
+					<label>Bank Name of Card</label>
+					<input type="text" name="bank_name" ng-model="payment.bank_name" id="bank_name">
+				</div>
+			</div>
+			<div ng-show="payment.mode == 'cheque'">
+				<div class="control">
+					<label>Cheque Number</label>
+					<input type="text" name="cheque_number" ng-model="payment.cheque_number">
+				</div>
+				<div class="control">
+					<label>Cheque Date</label>
+					<input type="text" name="cheque_date" ng-model="payment.cheque_date" id="cheque_date">
+				</div>
+				<div class="control">
+					<label>Bank Name of Cheque</label>
+					<input type="text" name="bank_name" ng-model="payment.bank_name" id="bank_name">
+				</div>
+				<div class="control">
+					<label>Branch</label>
+					<input type="text" name="branch" ng-model="payment.branch" id="branch">
+				</div>
+			</div>
+			<div class="control">
+				<label>Narration</label>
+				<textarea name="payment_narration" ng-model="payment.narration"></textarea>
+			</div>
+			<div class="control">
+				<label>Account</label>
+				<input type="text" name="ledger_name" ng-model="ledger_name" ng-change="get_ledger_list()" ng-disabled="ledger.id" autocomplete="off" />
+				<div ng-show="ledgers_list.length > 0" class="search_list">
+					<div ng-repeat="ledger in ledgers_list" class="search_list_item" ng-click="get_ledger_details(ledger)">
+						<span>[[ledger.name]]</span>
+					</div>
+				</div>
+			</div>				
+			<div class="button_control">
+				<p class="error_msg">[[no_ledger_msg]]</p>
+				<p class="error_msg">[[validate_error_msg]]</p>
+				<button ng-click="cancel_payment()" >Cancel</button>
+				<button ng-click="save_payment()" >Save</button>
+			</div>
+		</form>
+	</div>
+
+{% endblock content %}	

@@ -1,0 +1,14 @@
+<div class="page" >
+    <ul class="pagination" ng-hide="pages<=1"> 
+    	<li class="arrow unavailable">
+    		<a href="">&laquo;</a>
+    	</li>
+    	<li ng-repeat="page in range(pages) track by $index" ng-class="getClass($index+1)">
+    		<a href="" ng-click="select_page($index+1)">[[$index+1]]</a>
+    	</li>
+    	<li class="arrow">
+    		<a href="">&raquo;</a>
+    	</li> 
+    </ul>
+</div>
+<div class="clear"></div>

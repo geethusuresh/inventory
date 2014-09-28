@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Staffs{% endblock title%}
+{% block body_id %}staffs{% endblock body_id%}
+{% block controller %}ng-controller="StaffController" ng-init="init('{{csrf_token}}')" {% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_staff.html' %}
+	{% include 'view_staff_details.html' %}
+{% endblock dialogue_popup%}
+{% block content %}
+	<h2>Staffs</h2>
+	<button ng-click="create_staff()" class="create_new">Create</button>
+	<div class="search">
+		<label>Search Staff</label>
+		<input type="text" name="staff_name" ng-model="staff_name" ng-change="get_staffs_list()" >
+		<p class="error_msg">[[no_staff_message]]</p>
+	</div>
+	<table class="table list_table" ng-show="staffs.length > 0">
+		<tr>
+			<th>Name</th>
+			<th>Username</th>
+			<th>Contact No</th>
+			<th>Designation</th>
+			<th>View</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="staff in visible_list">
+			<td>[[staff.name]]</td>
+			<td>[[staff.username]]</td>
+			<td>[[staff.contact_no]]</td>
+			<td>[[staff.designation]]</td>
+			<td><a href="" ng-click="view_staff_details(staff)">View</a></td>
+			<td><a href="" ng-click="edit_staff(staff)">Edit</a></td>
+			<td><a href="" ng-click="delete_staff(staff)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="staffs.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>
+{% endblock %}

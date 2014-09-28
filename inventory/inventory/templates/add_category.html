@@ -1,0 +1,24 @@
+<div class="form_container single_column_container">
+	<form name="category_form">
+		<div class="control">
+			<label>Parent</label>
+			<input type="text" name="category_name" ng-model="category_name" ng-change="get_category_list()" autocomplete="off" />
+			<div ng-show="categories_list.length > 0" class="search_list">
+				<div ng-repeat="category in categories_list" class="search_list_item" ng-click="get_category_details(category)">
+					<span>[[category.name]]</span>
+				</div>
+			</div>
+		</div>
+		
+		<div class="control">
+			<label>Name</label>
+			<input type="text" ng-model="categry.name"/>
+		</div>
+		<div class="button_control">
+			<p class="error_msg">[[no_category_msg]]</p>
+			<p class="error_msg">[[validate_category_error_msg]]</p>
+			<input type="submit" value="Create" ng-click="save_category()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()">
+		</div>
+	</form>
+</div> 

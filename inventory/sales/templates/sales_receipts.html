@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block body_id %}sales_receipts{% endblock %}
+{% block title %} Sales Receipts{% endblock title%}
+{% block controller %} ng-controller="SalesReceiptsController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block extrahead %}
+	<script>
+		$(function() {
+			$( "#start_date" ).datepicker();
+			$( "#end_date" ).datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+	<h2> Sales Receipts </h2>
+	<div class="form_container single_column_container">
+	<form>
+		<div class="control">
+			<label>Start Date </label>
+			<input type="text" name="start_date" id="start_date" readonly>
+		</div>
+		<div class="control">
+			<label>End Date </label>
+			<input type="text" name="end_date" id="end_date" readonly>
+		</div>
+		<div class="button_control">
+			<button ng-click="search_receipts()">View</button>
+		</div>
+		<p class="error_msg">[[validate_msg]]</p>
+		<br>
+		<table ng-show="sales_receipts.length > 0" class="table list_table">
+		<tr>
+			<th>Invoice Number</th>
+			<th>Transaction Ref No</th>
+			<th>Date</th>
+			<th>Amount</th>
+			<th>Convert<input type="checkbox" ng-model="select_all" ng-click="convert_all()"></th>
+		</tr>
+		<tr ng-repeat="sales_receipt in sales_receipts">
+			<td ng-show="sales_receipt.sales_invoice_number.length > 0">[[sales_receipt.sales_invoice_number]]</td>
+			<td ng-hide="sales_receipt.sales_invoice_number.length > 0">[[sales_receipt.auto_invoice_no]]</td>
+			<td>[[sales_receipt.transaction_reference_no]]</td>
+			<td>[[sales_receipt.sales_invoice_date]]</td>
+			<td>[[sales_receipt.amount]]</td>
+			<td><input type="checkbox" ng-model="sales_receipt.invoice"></td>
+		</tr>
+	</table>
+	<div class="button_control">
+		<button ng-click="convert_to_invoice()">Convert to Invoice</button>
+	</div>
+	</form>
+	</div>
+
+{% endblock content %}

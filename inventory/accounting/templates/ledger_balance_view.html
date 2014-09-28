@@ -1,0 +1,24 @@
+<div class="ledger_balance_container" ng-controller="LedgerBalanceController" ng-init="init('{{csrf_token}}')">
+	<div class="ledger_balance">
+		<div class="search">
+			<label>Ledger Name</label>
+			<input type="text" name="ledger_name" ng-model="ledger_name" ng-change="get_ledger_balance()" >
+			<p class="error_msg">[[no_ledger_msg]]</p>
+		</div>
+		<table ng-show="ledger_balances.length > 0" class="table list_table">
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Current Balance</th>				
+			</tr>
+			<tr ng-repeat="ledger in visible_list">
+				<td>[[$index+1]]</td>
+				<td>[[ledger.name]]</td>
+				<td>[[ledger.balance]]</td>
+			</tr>
+		</table>
+	</div>
+	<span class="ledger_balance_search_button closed_search" ng-click="toggle_ledger_balance_search('.ledger_balance', $event)">
+		Account Balance
+	</span>
+</div>

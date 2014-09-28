@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block body_id %}stock_aging_report{% endblock %}
+{% block title %} Stock Aging Report {% endblock title%}
+{% block controller %} ng-controller="StockAgingReportController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+<h2> Stock Aging Report(Batch Wise) </h2>
+<div class="form_container single_column_container">
+	<div class="control">
+		<label>Batch</label>
+		<input type="text" name="batch_name" ng-model="batch_name" ng-change="get_batches()"autocomplete="off"/>
+		<div ng-show="batches.length > 0" class="search_list">
+			<div ng-repeat="batch in batches" class="search_list_item" ng-click="select_batch_details(batch)">
+				<span>[[batch.name]]</span>
+			</div>
+		</div>
+		<p class="error_msg">[[no_batch_msg]]</p>
+	</div>
+	<div class="button_control">
+		<p class="error_msg">[[validate_error_msg]]</p>
+		<button ng-click="get_stock_report()">View</button>
+	</div>
+</div>
+
+<table ng-show="item_stock.length > 0" class="table list_table" >
+	<tr>
+		<th>Item</th>
+		<th ng-repeat="month in months" >[[month.name]]
+			<table class="table list_table">
+				<tr>
+					<td ng-repeat="field in month.fields">[[field]]</td>
+				</tr>
+			</table>
+		</th>
+	</tr>
+	<tr ng-repeat="item in visible_list">
+		<td>[[item.item_name]]</td>
+		<td ng-repeat="month in item.month_details">
+			<table class="table" cellpadding="0" cellspacing="0">
+				<tr>
+					<td ng-repeat="field in month.fields track by $index" style="border:none">[[field]]</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+	<div ng-show="item_stock.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

@@ -1,0 +1,35 @@
+<div id="cost_price_calculator" class="form_container wide_label_container">
+	<div class="control">
+		<label>Total Transportation Charge</label>
+		<input type="text" ng-model="total_transportation_charge" ng-change="calculate_unit_transportation_charge()" />
+	</div>
+	<div class="control">
+		<label>Unit Transportation Charge</label>
+		<input type="text" ng-model="unit_transportation_charge" readonly />
+	</div>
+	
+	<div class="control">
+		<label>Total Handling Charge</label>
+		<input type="text" ng-model="total_handling_charge" ng-change="calculate_unit_handling_charge()" />
+	</div>
+	<div class="control">
+		<label>Unit Handling Charge</label>
+		<input type="text" ng-model="unit_handling_charge" readonly />
+	</div>
+	<div class="control">
+		<label>Total Expense Charge</label>
+		<input type="text" ng-model="total_expense_charge" ng-change="calculate_unit_expense_charge()" />
+	</div>
+	<div class="control">
+		<label>Unit Expense Charge</label>
+		<input type="text" ng-model="unit_expense_charge" readonly />
+	</div>
+	<div class="control">
+		<label>Total Cost Price</label>
+		<input type="text" ng-model="cost_price" readonly />
+	</div>
+	<div class="button_control">
+		<p class="error_msg">[[cost_price_calculator_message]]</p>
+		<input type="submit" value="Ok" ng-click="close_cost_price_calculator()">
+	</div>
+</div>

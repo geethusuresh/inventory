@@ -1,0 +1,40 @@
+<div class="stock_view_container" ng-controller="StockViewController" ng-init="init('{{csrf_token}}')">
+	<div class="stock_view">
+		<div class="search">
+			<label>Search Item</label>
+			<input type="text" name="item_name" ng-model="item_name" ng-change="get_item_stock_list()" >
+			<p class="error_msg">[[no_item_msg]]</p>
+		</div>
+		<table ng-show="stock_items.length > 0" class="table list_table">
+			<tr>
+				<th>#</th>
+				<th>Item Name</th>
+				<th>Code</th>
+				<th>Product</th>
+				<th>Brand</th>
+				<th>Category</th>
+				<th>Batch</th>
+				<th>Stock</th>
+				<th>Size</th>
+
+			</tr>
+			<tr ng-repeat="item in visible_list">
+				<td>[[$index+1]]</td>
+				<td>[[item.name]]</td>
+				<td>[[item.code]]</td>
+				<td>[[item.product_name]]</td>
+				<td>[[item.brand_name]]</td>
+				<td>[[item.category]]</td>
+				<td>[[item.batch]]</td>
+				<td>[[item.stock]][[item.uom]]</td>
+				<td>[[item.size]]</td>
+			</tr>
+		</table>
+		<div ng-show="stock_items.length > 0">
+			{% include 'pagination_div.html' %}
+		</div>		
+	</div>
+	<span class="stock_search_button closed_search" ng-click="toggle_stock_search('.stock_view', $event)">
+		Stock Search 
+	</span>
+</div>

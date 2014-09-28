@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block body_id %}batch_list{% endblock %}
+{% block title %} Batches {% endblock title%}
+{% block controller %} ng-controller="BatchController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_batch.html' %}                  
+{% endblock %}
+{% block content %}
+	<script>
+		$(function() {
+		$( "#created_date" ).datepicker();
+		$( "#expiry_date" ).datepicker();
+		});
+	</script>
+	<h2>Batches</h2>
+	<button class="create_new" ng-click="create_batch()">Create</button>
+	<div class="search">
+		<label>Search Batch</label>
+		<input type="text" name="batch_name" ng-model="batch_name" ng-change="get_batch_list()" >
+		<p class="error_msg">[[no_batch_msg]]</p>
+	</div>
+	<table ng-show="batches.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>Created date</th>
+			<th>Expiry date</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="batch in visible_list">
+			<td>[[batch.name]]</td>
+			<td>[[batch.created_date]]</td>
+			<td>[[batch.expiry_date]]</td>
+			<td><a href="" ng-click="edit_batch_details(batch)">Edit</a></td>
+			<td><a href="" ng-click="delete_batch(batch)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="batches.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

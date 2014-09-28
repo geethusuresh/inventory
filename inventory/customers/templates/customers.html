@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} Customers {% endblock title%}
+{% block body_id %}customers{% endblock %}
+{% block controller %} ng-controller="CustomerController" ng-init="init('{{ csrf_token }}')" 
+{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_customer.html' %}
+{% endblock %}
+{% block content %}
+	<h2> Customers </h2>
+	<button ng-click="create_customer()" class="create_new">Create New Customer</button>
+	<div class="search">
+		<label>Search Customer</label>
+		<input type="text" name="customer_name" ng-model="customer_name" ng-change="get_customer_list()" >
+		<p class="error_msg">[[no_customer_msg]]</p>
+	</div>
+	<table ng-show="customers.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>View/Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="customer in visible_list">
+			<td>[[customer.name]]</td>
+			<td><a href="" ng-click="edit_customer_details(customer)">View/Edit</a></td>
+			<td><a href="" ng-click="delete_customer(customer)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="customers.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %} 

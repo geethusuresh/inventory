@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} Account Receivable Report {% endblock title%}
+{% block body_id %}a/creceivable{% endblock %}
+{% block controller %} ng-controller="AccountsReceivableController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+
+<h2> Accounts Receivable </h2>
+
+<table ng-show="account_receivables.length > 0" class="table list_table">
+	<tr>
+		<th>#</th>
+		<th>Name</th>
+		<th>Debit Balance</th>
+		<th>Credit Balance</th>
+	</tr>
+	<tr ng-repeat="account_receivable in visible_list">
+		<td>[[account_receivable.count]]</td>
+		<td>[[account_receivable.name]]</td>
+		<td>[[account_receivable.debit_balance]]</td>
+		<td>[[account_receivable.credit_balance]]</td>
+	</tr>
+	
+	</table>
+	<div class="button_control">
+		<button  ng-click="get_account_receivable_report()" >Generate PDF</button>
+	</div>
+	<div ng-show="account_receivables.length > 1 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

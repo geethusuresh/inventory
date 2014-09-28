@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block body_id %}brand_list{% endblock %}
+{% block title %} Brands {% endblock title%}
+{% block controller %} ng-controller="BrandController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_brand.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2> Brands </h2>
+	<button ng-click="create_brand()" class="create_new">Create</button>
+	<div class="search">
+		<label>Search Brands</label>
+		<input type="text" name="brand_name" ng-model="brand_name" ng-change="get_brands()" >
+		<p class="error_msg">[[no_brand_msg]]</p>
+	</div>
+	<table ng-show="brands.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="brand in brands">
+			<td>[[brand.name]]</td>
+			<td><a href="" ng-click="edit_brand_details(brand)">Edit</a></td>
+			<td><a href="" ng-click="delete_brand(brand)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="brands.length > 0">
+		{% include 'pagination_div.html' %}
+	</div>
+{% endblock content %}

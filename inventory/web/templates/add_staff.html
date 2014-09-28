@@ -1,0 +1,46 @@
+<div id="add_staff" class="form_container">
+	<form name="add_staff" class="add_staff">
+		<div class="control"> 
+			<label>First Name</label>
+			<input type="text" ng-model="staff_details.first_name">
+		</div>
+		<div class="control"> 
+			<label>Last Name</label>
+			<input type="text" ng-model="staff_details.last_name">
+		</div>
+		<div class="control"> 
+			<label>Username</label>
+			<input type="text" ng-model="staff_details.username" ng-readonly="is_edit" ng-change="check_username_exists()">
+		</div>
+		<div class="control"> 
+			<label ng-hide="is_edit">Password</label>
+			<input type="password" ng-model="staff_details.password" ng-hide="is_edit">
+		</div>
+		<div class="control"> 
+			<label ng-hide="is_edit">Confirm Password</label>
+			<input type="password" ng-model="staff_details.confirm_password" ng-hide="is_edit">
+		</div>
+		<div class="control"> 
+			<label>Email</label>
+			<input type="text" ng-model="staff_details.email">
+		</div>
+		<div class="control"> 
+			<label>Designation</label>
+			<input type="text" ng-model="staff_details.designation">
+		</div>
+		<div class="control"> 
+			<label>Address</label>
+			<textarea ng-model="address"></textarea>
+		</div>
+		<div class="control"> 
+			<label>Contact No.</label>
+			<input type="text" ng-model="staff_details.contact_no">
+		</div>
+		<div class="button_control">
+			<p class='error_msg'>[[username_exists_msg]]</p>
+			<p class="error_msg">[[validation_staff_message]]</p>
+			<input type="submit" value="Create" ng-click="save_staff()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()">
+		</div>
+	</form>
+</div>

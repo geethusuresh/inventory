@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Suppliers {% endblock title%}
+{% block body_id %}suppliers{% endblock %}
+{% block controller %} ng-controller="SupplierController" ng-init="init('{{ csrf_token }}')" 
+{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_supplier.html' %}
+{% endblock %}
+{% block content %}
+	<h2> Suppliers </h2>
+	<button ng-click="create_supplier()" class="create_new">Create New Supplier</button>
+	<div class="search">
+		<label>Search Supplier</label>
+		<input type="text" name="supplier_name" ng-model="supplier_name" ng-change="get_supplier_list()" >
+		<p class="error_msg">[[no_supplier_msg]]</p>
+	</div>
+	<table ng-show="suppliers.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>View/Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="supplier in visible_list">
+			<td>[[supplier.name]]</td>
+			<td><a href="" ng-click="edit_supplier_details(supplier)">View/Edit</a></td>
+			<td><a href="" ng-click="delete_supplier(supplier)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="suppliers.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+ 	
+{% endblock content %}

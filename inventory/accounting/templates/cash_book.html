@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %} Cash Book {% endblock title%}
+{% block body_id %}cash_book{% endblock %}
+{% block controller %} ng-controller="CashBookController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+ <script>
+	$(function() {
+	$( "#start_date" ).datepicker();
+	$( "#end_date" ).datepicker();
+	});
+</script>
+	<h2> Cash Book </h2>
+	<div class="form_container single_column_container">
+		<form>
+			<div class="control">
+				<label>Start Date </label>
+				<input type="text" id="start_date" ng-model="start_date" readonly>
+			</div>
+			<div class="control">
+				<label>End Date </label>
+				<input type="text" id="end_date" ng-model="end_date" readonly>
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[validate_error_msg]]</p>
+				<button ng-click="view_cash_book()">View</button>
+				<button ng-click="generate_pdf()" >Generate PDF</button>
+			</div>
+		</form>
+	</div>
+	<table ng-show="cash_entries.length > 0" class="table list_table">
+		<tr>
+			<th>#</th>
+			<th>Date</th>
+			<th>Ref No</th>
+			<th>Particulars</th>
+			<th>Debit Amount</th>
+			<th>Credit Amount</th>
+		</tr>
+		<tr ng-repeat="ledger_entry in cash_entries">
+			<td>[[ledger_entry.count]]</td>
+			<td>[[ledger_entry.date]]</td>
+			<td>[[ledger_entry.transaction_ref]]</td>
+			<td> 
+				<span ng-hide = "ledger_entry.debit_ledger == 'Cash'">[[ledger_entry.debit_ledger]]</span>
+				<span ng-hide = "ledger_entry.credit_ledger == 'Cash'">[[ledger_entry.credit_ledger]]</span>
+			</td>
+			<td> <span ng-show = "ledger_entry.debit_ledger == 'Cash'">[[ledger_entry.debit_ledger_debit]]</span>&nbsp;</td>
+			<td> <span  ng-show = "ledger_entry.credit_ledger == 'Cash'">[[ledger_entry.credit_ledger_credit]]</span> &nbsp;</td>
+		</tr>
+	</table>
+
+{% endblock content %}	

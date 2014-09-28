@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Inventives{% endblock title%}
+{% block extrahead %}
+	<script>
+		$(function() {
+			$( "#start_date" ).datepicker();
+			$( "#end_date" ).datepicker();
+		});
+	</script>
+{% endblock %}
+{% block controller %} ng-controller="IncentivesController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+	<h2>Incentives</h2>
+	<div class="form_container single_column_container">
+		<div class="control">
+			<label>Salesman</label>
+			<input type="text" ng-model="salesman_name" ng-change="search_salesman()" /> 
+			<div ng-show="salesmen.length > 0" class="search_list">
+				<div ng-repeat="salesman in salesmen" class="search_list_item" ng-click="select_salesman(salesman)">
+					<span>[[salesman.name]]</span>
+				</div>
+			</div>
+		</div> 
+		<div class="control">
+			<label>Start Date</label>
+			<input type="text" id="start_date" readonly />
+		</div>
+		<div class="control">
+			<label>End Date</label>
+			<input type="text" id="end_date" readonly />
+		</div>
+		<div class="button_control">
+			<p class="error_msg">[[no_salesman_message]]</p>
+			<p class="error_msg">[[error_msg]]</p>
+			<input type="button" ng-click="get_sales();" value="Get Sales" />
+		</div>
+		<div class="control" ng-show="no_of_sales>0">
+			<label>No of Sales</label>
+			<input type="text" id="end_date" ng-model="no_of_sales" readonly />
+		</div>		
+		<div class="control" ng-show="no_of_sales>0">
+			<label>Incentive / Sale</label>
+			<input type="text" id="end_date" ng-model="incentive_per_sale" ng-change="calculate_total_incentive()" />
+		</div>	
+		<div class="control" ng-show="no_of_sales>0">
+			<label> Total incentives </label>
+			<input type="text" id="end_date" ng-model="total_incentive" readonly />
+		</div>	
+	</div>
+{% endblock content %}

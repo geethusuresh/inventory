@@ -1,0 +1,68 @@
+<!DOCTYPE HTML>
+<html ng-app="smartbook" class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock title%} | Smartbook </title>
+    <!-- Calendar bootstrap css -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/jquery-ui.css" type="text/css" />
+    <!-- Calendar css -->    
+    <link rel="shortcut icon" href="/static/images/f_icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <script src="/static/js/jquery-1.11.1.min.js"></script>
+    <script src="/static/js/jquery-ui.js"></script>
+    
+    <!--  Angularjs -->
+    <script src="/static/js/angular_app/lib/angular/angular.min.js"></script>
+    <script src="/static/js/angular_app/lib/angular/angular-route.js"></script>
+    <script src="/static/js/angular_app/lib/angular/angular-resource.js"></script>
+    <script src="/static/js/angular_app/lib/ngDraggable.js"></script>
+    <script src="/static/js/angular_app/app.js"></script>
+    <script src="/static/js/angular_app/services.js"></script>
+    <script src="/static/js/angular_app/directives.js"></script>
+    <script src="/static/js/angular_app/common_controllers.js"></script>
+    <script src="/static/js/angular_app/inventory_controller.js"></script>
+    <script src="/static/js/angular_app/accounting_controller.js"></script>
+    <script src="/static/js/angular_app/customer_controller.js"></script>
+    <script src="/static/js/angular_app/supplier_controller.js"></script>
+    <script src="/static/js/angular_app/administration_controller.js"></script>
+    <script src="/static/js/angular_app/purchases_controller.js"></script>
+    <script src="/static/js/angular_app/sales_controller.js"></script>
+          
+    {% block extrahead %}
+    {% endblock extrahead %}
+    </head>
+    <body id="{% block body_id %}base{% endblock %}" {% block controller %}{% endblock controller %}>
+        {% include 'stock_view.html' %}
+        {% include 'ledger_balance_view.html' %}
+        {% block body %}
+            <div id="overlay"></div>
+            <div id="popup_overlay"></div>
+            <div class="spinner"></div>
+            <div id="dialogue_popup_container">
+                <div id="dialogue_popup">
+                    <a href="" class="close_pop" ng-click="hide_popup()"></a>
+                    {% block dialogue_popup %}
+                        
+                    {% endblock %}
+                    <p class="message"></p>
+                </div>
+            </div>        
+            <div class="container">               
+                <div class="content" >
+                    {% block content %}
+
+                    {% endblock content %}
+                    <div class="clear"></div>
+                </div>
+                {% include 'menu.html' %}
+                <div class="clear"></div>
+                {% block footer %}
+                    {% include 'footer.html' %}
+                {% endblock footer %}
+                <div class="clear"></div>
+            </div>
+        {% endblock body%}
+    </body>
+</html>

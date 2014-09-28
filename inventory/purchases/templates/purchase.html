@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block body_id %}purchase{% endblock %}
+{% block title %} Purchase {% endblock title%}
+{% block controller %} ng-controller="PurchaseController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'payment_mode_details.html' %}
+	{% include 'cost_price_calculator.html' %}
+	{% include 'add_batch.html' %}
+	{% include 'add_item.html' %}
+	{% include 'add_supplier.html' %}    
+	{% include 'show_transaction_details.html' %}  
+	{% include 'bank_account_details.html' %} 
+	{% include 'cost_price_warning_message.html' %} 
+
+{% endblock %}
+{% block extrahead %}
+	<script>
+		$(function() {
+			$("#invoice_date").datepicker();
+			$("#cheque_date").datepicker();
+			$('#created_date').datepicker();
+			$('#expiry_date').datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+	<h2> Purchase </h2>
+	<div class="form_container wide_form">
+		<form name="purchase_form">	
+			<div class="control">
+				<label>DO No</label>
+				<input type="text" ng-model="purchase.do_no"> 
+			</div>		
+			<div class="control">
+				<label>Invoice No</label>
+				<input type="text" ng-model="purchase.invoice_no">
+			</div>	
+			<div class="control">
+				<label>Invoice Date</label>
+				<input type="text" id="invoice_date">
+			</div>	
+			<div class="control">
+				<label>Supplier</label>
+				<input type="text" ng-model="supplier_name" ng-change="search_supplier()" ng-click="select_supplier_flag=true"> 
+				<div class="search_list" ng-show="select_supplier_flag">
+					<div class="search_list_item" ng-click="select_supplier_flag=false" ng-show="select_supplier_flag" ng-hide="!select_supplier_flag">
+						<span><a href="" ng-click="new_supplier(purchase)">Create New</a></span>
+					</div>
+					<div ng-repeat="supplier in suppliers track by $index" class="search_list_item" ng-click="select_supplier(supplier)">
+						<span>[[supplier.name]]</span>
+					</div>
+				</div>
+			</div>
+			<div class="payment_mode">
+				<label>Payment Mode</label>
+				<div class="control">
+					<input type="radio" ng-model="purchase.payment_mode" value="cash" /><label>Cash</label>
+					<input type="radio" ng-model="purchase.payment_mode" value="cheque" ng-click="bank_account_details('cheque')" /><label>Cheque</label>
+					<input type="radio" ng-model="purchase.payment_mode" value="card" ng-click="bank_account_details('card')" /><label>Card</label>
+					<input type="radio" ng-model="purchase.payment_mode" value="credit" /><label>Credit</label>
+				</div> 
+			</div>
+			<br/>
+			<hr>
+			<button ng-click="add_new_purchase_item()">New Item</button>
+			<table class="table list_table table-striped rules" ng-show="purchase.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Stock </th>
+					<th> Purchase Unit </th>
+					<th> Quantity </th>
+					<th> Unit Purchase Price </th>
+					<th> Unit Wholesale Price </th>
+					<th> Unit Retail Price </th>
+					<th> Unit Cost Price </th>
+					<th> Unit Whole Sale Profit </th>
+					<th> Unit Retail Profit </th>
+					<th> Sales Unit Conversion </th>
+					<th> Net Amount </th>
+					<th> Remove </th>
+				</tr>
+				<tr ng-repeat="item in purchase.items track by $index">
+					<td>[[$index+1]]</td>
+					<td>
+						<input type="text" ng-model="item.name" ng-change="search_items(item)" ng-click="item.item_search=true;"/>
+						<div class="search_list wide_list" ng-show="item.item_search">
+							<div class="search_list_item" ng-click="item.item_search=false" ng-hide="!item.item_search" ng-show="item.item_search">
+								<span><a href="" ng-click="add_new_item(item)">Create New</a></span>
+							</div>
+							<div ng-repeat="item_data in item.items" class="search_list_item" ng-click="select_item_details(item_data);">
+								<span ng-click="">[[item_data.item_name]]</span>
+							</div>
+						</div>
+					</td>
+					<td>[[item.code]]</td>
+					<td>
+						<input type="text" ng-change="search_batch(item)" ng-click="item.batch_search=true" ng-model="item.batch_name">						
+						<div ng-show="item.batch_search"  class="search_list">
+							<div class="search_list_item" ng-click="item.batch_search=false" ng-hide="!item.batch_search" ng-show="item.batch_search" >
+								<span><a href="" ng-click="new_batch(item)">Create New</a></span>
+							</div>
+							<div ng-repeat="batch in item.batches" class="search_list_item" ng-click="select_batch(batch);">
+								<span ng-click="">[[batch.name]]</span>
+							</div>
+						</div>
+						<p class="error_msg">[[no_batch_msg]]</p>
+					</td>
+					<td>[[item.stock]]</td>
+					<td>
+						<input type="text" ng-show="item.uom_exists" ng-model="item.purchase_unit" readonly/>
+						<select ng-model="item.purchase_unit" ng-options="uom for uom in uoms" ng-hide="item.uom_exists" ng-change="get_conversion_units(item)">
+							<option value=""> Select</option>
+						</select>
+					</td>
+					<td><input type="text" ng-model="item.quantity" ng-change="save_quantity(item)" /></td>
+					<td>
+						<input type="text" ng-model="item.purchase_price" ng-change="calculate_net_amount(item)" ng-hide="item.uom_exists"/>
+						<input type="text" ng-show="item.uom_exists" ng-model="item.purchase_price" readonly/>
+					</td>
+					<td>
+						<input type="text" ng-model="item.whole_sale_price" ng-change="calculate_profit(item)" ng-hide="item.uom_exists"/>
+						<input type="text" ng-show="item.uom_exists" ng-model="item.whole_sale_price" readonly/>
+					</td>
+					<td>
+						<input type="text" ng-model="item.retail_price" ng-change="calculate_profit(item)" ng-hide="item.uom_exists"/>
+						<input type="text" ng-model="item.retail_price" ng-show="item.uom_exists" readonly/>
+					</td>
+					<td>
+						<input type="text" ng-model="item.cost_price" ng-click="cost_price_calculator(item)" readonly ng-hide="item.uom_exists"/>
+						<input type="text" ng-model="item.cost_price" readonly ng-show="item.uom_exists"/>
+					</td>
+					<td>[[item.whole_sale_profit]]</td>
+					<td>[[item.retail_profit]]</td>
+					<td>
+						<input type="text" ng-show="item.uom_exists" ng-model="item.conversion_unit_name" readonly />
+						<select ng-model="item.conversion_unit" ng-options="conversion_unit.id as conversion_unit.name for conversion_unit in item.conversions" ng-hide="item.uom_exists">
+							<option value=""> Select</option>
+						</select>
+					</td>
+					
+					<td>[[item.net_amount]]</td>
+					<td><a href="" ng-click="remove_purchase_item(item)">X</a></td>
+				</tr> 
+			</table>	
+			<hr>		
+			<div class="control">
+				<label>Discount</label>
+				<input type="text" ng-model="purchase.discount" ng-change="calculate_total_purchase_amount()"/>
+			</div>
+			<div class="control">
+				<label>Purchase Tax</label>
+				<input type="text" ng-model="purchase.purchase_tax"/>
+			</div>
+			<div class="control">
+				<label>Grant Total</label>
+				<input type="text" ng-model="purchase.grant_total" readonly/>
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[validate_purchase_msg]]</p>
+				<input class="" type="submit" value="Save" ng-click="save_purchase()"/>
+			</div>
+		</form>
+	</div>
+{% endblock %}

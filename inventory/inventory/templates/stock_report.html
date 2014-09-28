@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block body_id %}stock_report{% endblock %}
+{% block title %} Stock Report {% endblock title%}
+{% block controller %} ng-controller="StockReportController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+<h2> Stock Report(Batch Wise) </h2>
+<div class="form_container single_column_container">
+	<form>
+		<div class="control">
+			<label>Batch</label>
+			<input type="text" name="batch_name" ng-model="batch_name" ng-change="get_batches()"autocomplete="off"/>
+			<div ng-show="batches.length > 0" class="search_list">
+				<div ng-repeat="batch in batches" class="search_list_item" ng-click="get_batch_details(batch)">
+					<span>[[batch.name]]</span>
+				</div>
+			</div>
+			<p class="error_msg">[[message]]</p>
+			<p class="error_msg">[[no_batch_msg]]</p>
+		</div>
+		
+	</form>
+	<div class="button_control">
+		<p class="error_msg">[[validate_error_msg]]</p>
+		<button ng-click="view_stock()">View</button>
+		<button ng-click="get_stock_report()" >Generate PDF</button>
+	</div>
+</div>
+
+<table ng-show="stock_entries.length > 0" class="table list_table">
+	<tr>
+		<th>#</th>
+		<th>Name</th>
+		<th>Quantity</th>
+		<th>Purchase price</th>
+		<th>Whole sale price</th>
+		<th>Retail Price</th>
+	</tr>
+	<tr ng-repeat="stock_entry in visible_list">
+		<td>[[stock_entry.count]]</td>
+		<td>[[stock_entry.item_name]]</td>
+		<td>[[stock_entry.quantity]]</td>
+		<td>[[stock_entry.purchase_price]]</td>
+		<td>[[stock_entry.whole_sale_price]]</td>
+		<td>[[stock_entry.retail_price]]</td>
+	</tr>
+	
+	</table>
+	
+	<div ng-show="stock_entries.length > 1 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

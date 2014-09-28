@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block body_id %}vat_list{% endblock %}
+{% block title %} Vat {% endblock title%}
+{% block controller %} ng-controller="VatController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_vat.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2> VAT Types </h2>
+	<button href="" ng-click="create_vat()" class="create_new">Create</button>
+	<div class="search">
+		<label>Search Vat Type</label>
+		<input type="text" name="vat_type" ng-model="vat_type" ng-change="get_vat_list()" >
+		<p class="error_msg">[[no_vat_msg]]</p>
+	</div>
+	<table ng-show="vats.length > 0" class="table list_table">
+		<tr>
+			<th>Vat Type</th>
+			<th>Tax Percentage</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="vat in visible_list">
+			<td>[[vat.name]]</td>
+			<td>[[vat.tax_percentage]]</td>
+			<td><a href="" ng-click="edit_vat_details(vat)">Edit</a></td>
+			<td><a href="" ng-click="delete_vat(vat)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="vats.length > 0">
+		{% include 'pagination_div.html' %}
+	</div>	
+
+{% endblock content %}

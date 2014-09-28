@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block body_id %}categories_tree{% endblock %}
+{% block title %} Categories {% endblock title%}
+{% block controller %} ng-controller="CategoryTreeController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_category.html' %}                  
+{% endblock %}
+{% block extrahead %}
+	<script type="text/ng-template" id="category_renderer.html">			
+		<a href="" class="shrink" ng-click="toggle_category_view($event, category)" >+</a>
+        <span>[[category.name]]</span> <a href="" ng-click="add_subcategory(category)"> New </a>        
+        <ul>
+        	<li ng-repeat="category in category.subcategories" ng-include = "'category_renderer.html'" >
+        	 </li>
+    	</ul>
+	</script>
+{% endblock %}
+{% block content %}
+	<h2> Categories </h2>
+	<button ng-click="create_category()" class="create_new">Create</button>
+	<p ng-hide="categories.length > 0">No categories</p>
+	<div class='tree_view'>
+	    <ul>
+	        <li ng-repeat="category in categories" ng-include="'category_renderer.html'"></li>
+	    </ul>
+	</div>
+{% endblock content %}

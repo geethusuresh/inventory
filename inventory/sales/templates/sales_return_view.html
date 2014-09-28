@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block body_id %}sales_return_view{% endblock %}
+{% block title %} Sales Return View {% endblock title%}
+{% block controller %} ng-controller="SalesReturnViewController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'show_payment_mode_details.html' %}        
+{% endblock %}
+{% block content %}
+	<h2> View Sales Return</h2>
+	<div class="form_container wide_form">
+		<form name="sales_form">
+			<div class="control">
+				<label>Reference No</label>
+				<input type="text" ng-model="ref_no" ng-change="get_sales_details()">
+			</div>	
+			<p class="error_msg">[[sales_error_message]]</p>
+			<div class="control">
+				<label>DO No</label>
+				<label>[[sales_view.do_no]]</label>
+			</div>		
+			<div class="control">
+				<label>Invoice No</label>
+				<label>[[sales_view.sales_invoice]]</label>
+			</div>	
+			<div class="control">
+				<label>Invoice Date</label>
+				<label>[[sales_view.invoice_date]]</label>
+			</div>	
+			<div class="control">
+				<label>Salesman</label>
+				<label>[[sales_view.salesman]]</label>
+			</div>
+			<div class="control">
+				<label>Customer</label>
+				<label>[[sales_view.customer]]</label>
+			</div>
+			<div class="payment_mode">
+				<label>Bill type</label>
+				<div class="control">
+					<input type="radio" ng-model="sales_view.bill_type" value="Receipt" disabled="true" /><label>Receipt</label>
+					<input type="radio" ng-model="sales_view.bill_type" value="Invoice" disabled="true" /><label>Invoice</label>
+				</div> 
+			</div>
+			<div class="payment_mode">
+				<label>Payment Mode</label>
+				<div class="control">
+					<input type="radio" ng-model="sales_view.payment_mode" value="cash" disabled="true" /><label>Cash</label>
+					<input type="radio" ng-model="sales_view.payment_mode" value="cheque" disabled="true" /><label>Cheque</label>
+					<input type="radio" ng-model="sales_view.payment_mode" value="card" disabled="true" /><label>Card</label>
+					<input type="radio" ng-model="sales_view.payment_mode" value="credit"disabled="true" /><label>Credit</label>
+				</div> 
+			</div>
+			<br/>
+			<hr>
+			<button ng-click="show_payment_details()" ng-show="sales_view.payment_mode == 'cheque' || sales_view.payment_mode == 'card'">View Payment Details</button>
+			<table class="table list_table table-striped rules" ng-show="sales_view.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Quantity </th>
+					<th> MRP </th>
+					<th ng-show="sales_view.bill_type == 'Invoice'"> Tax </th>
+					<th> Net Amount </th>
+				</tr>
+				<tr ng-repeat="item in sales_view.items">
+					<td>[[$index+1]]</td>
+					<td>[[item.name]]</td>
+					<td>[[item.code]]</td>
+					<td>[[item.batch]]</td>
+					<td>[[item.item_quantity]]</td>
+					<td>[[item.mrp]]</td>
+					<td ng-show="sales_view.bill_type == 'Invoice'">[[item.tax]]<span ng-show="item.tax > 0">%</span></td>
+					<td>[[item.net_amount]]</td>
+				</tr> 
+			</table>	
+			<hr>		
+			<div class="control">
+				<label>Discount</label>
+				<label>[[sales_view.discount]]</label>
+			</div>
+
+			<div class="control">
+				<label>Grant Total</label>
+				<label>[[sales_view.grant_total]]</label>
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[validate_sales_msg]]</p>
+				<input class="" type="submit" value="Save" ng-click="save_sales()">
+			</div>
+		</form>
+	</div>
+{% endblock %}

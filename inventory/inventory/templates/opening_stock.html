@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block body_id %}opening_stock{% endblock %}
+{% block title %} Opening Stock {% endblock title%}
+{% block controller %} ng-controller="OpeningStockController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'search_items.html' %} 
+    {% include 'add_batch.html' %} 
+    {% include 'add_item.html' %}  
+    {% include 'show_transaction_details.html' %} 
+{% endblock %}
+{% block content %}
+<script>
+	$(function() {
+		$('#created_date').datepicker();
+		$('#expiry_date').datepicker();
+	});
+</script>
+	<h2> Opening Stock </h2>
+	<div class="form_container">
+		<form name="opening_stock">
+			<button ng-click="add_new_opening_stock_item()">New Item</button>			
+			<table class="table list_table table-striped rules" ng-show="opening_stock_items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Stock </th>
+					<th> Quantity </th>
+					<th> Purchase Unit </th>
+					<th> Sales Unit Conversion  </th>
+					<th> Unit Purchase Price </th>
+					<th> Unit Wholesale Price </th>
+					<th> Unit Retail Price </th>
+					<th> Net Amount </th>
+					<th>Remove</th>
+				</tr>
+				<tr ng-repeat="item in opening_stock_items">
+					<td>[[$index+1]]</td>
+					<td>
+						<input type="text" ng-model="item.name" ng-change="search_items(item)" ng-click="item.item_search=true;"/>
+						<!-- ng-show="batch_search" ng-hide="batch_selected || !batch_search"  -->
+						<div class="search_list wide_list" ng-show="item.item_search">
+							<div class="search_list_item" ng-click="item.item_search=false" ng-hide="!item.item_search" ng-show="item.item_search">
+								<span><a href="" ng-click="add_new_item(item)">Create New</a></span>
+							</div>
+							<div ng-repeat="item_data in item.items" class="search_list_item" ng-click="select_item_details(item_data);">
+								<span ng-click="">[[item_data.item_name]]</span>
+							</div>
+						</div>
+					</td>
+					<td>[[item.code]]</td>
+					<td>
+
+						<input type="text" ng-change="search_batch(item)" ng-click="item.batch_search=true" ng-model="item.batch_name">				
+						<div ng-show="item.batch_search" ng-hide="batch_selected || !batch_search" class="search_list">
+							<div class="search_list_item" ng-show="item.batch_search" ng-hide="!item.batch_search" ng-click="item.batch_search=false;">
+								<span><a href="" ng-click="new_batch(item)">Create New</a></span>
+							</div>
+							<div ng-repeat="batch in item.batches" class="search_list_item" ng-click="  select_batch(batch);">
+								<span ng-click="">[[batch.name]]</span>
+							</div>
+						</div>
+						<p class="error_msg">[[no_batch_msg]]</p>
+					</td>
+					<td>[[item.stock]]</td>
+					<!-- <td>[[item.stock_unit]]</td> -->
+					<td><input type="text" ng-model="item.quantity" ng-change="save_quantity(item)"></td>
+					<td>
+						<input type="text" ng-show="item.uom_exists" ng-model="item.purchase_unit" readonly/>
+						<select ng-model="item.purchase_unit" ng-options="uom for uom in uoms" ng-hide="item.uom_exists" ng-change="get_conversion_units(item)">
+							<option value=""> Select</option>
+						</select>
+					</td>
+					<td>
+						<input type="text" ng-show="item.uom_exists" ng-model="item.conversion_unit_name" readonly />
+						<select ng-model="item.conversion_unit" ng-options="conversion_unit.id as conversion_unit.name for conversion_unit in item.conversions" ng-hide="item.uom_exists">
+							<option value=""> Select</option>
+						</select>
+					</td>
+					<td><input type="text" ng-model="item.purchase_price" ng-change="calculate_net_amount(item)"></td>
+					<td><input type="text" ng-model="item.whole_sale_price"/></td>
+					<td><input type="text" ng-model="item.retail_price" /></td>
+					<td><input type="text" ng-model="item.net_amount" readonly></td>
+					<td><a href="" ng-click="remove_opening_stock_item(item)">Remove</a></td>
+				</tr>
+				
+			</table>
+			<div class="button_control">
+				<p class="error_msg">[[validate_opening_stock_msg]]</p>
+				<input class="" type="submit" value="Save" ng-click="save_opening_stock()">
+			</div>
+		</form>
+	</div>
+{% endblock content %}

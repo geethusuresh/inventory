@@ -1,0 +1,13 @@
+<div class="form_container single_column_container" id="add_brand">
+	<form name="brand_form">
+		<div class="control">
+			<label>Name</label>
+			<input type="text" ng-model="brand.name"/>
+		</div>
+		<div class="button_control">
+			<p class="error_msg">[[validate_brand_error_msg]]</p><br/>
+			<input type="submit" value="Create" ng-click="save_brand()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()"><br/>
+		</div>
+	</form>
+</div>

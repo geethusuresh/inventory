@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block body_id %}sales{% endblock %}
+{% block title %} Sales {% endblock title%}
+{% block controller %} ng-controller="SalesController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'payment_mode_details.html' %}
+	{% include 'show_transaction_details.html' %}   
+	{% include 'add_salesman.html' %}    
+	{% include 'add_customer.html' %}    
+	{% include 'bank_account_details.html' %} 
+{% endblock %}
+{% block extrahead %}
+	<script>
+		$(function() {
+			$( "#invoice_date" ).datepicker();
+			$( "#cheque_date" ).datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+	<h2> Sales </h2>
+	<div class="form_container wide_form">
+		<form name="sales_form">	
+			<div class="control">
+				<label>DO No</label>
+				<input type="text" ng-model="sales.do_no"> 
+			</div>		
+			<div class="control">
+				<label>Invoice No</label>
+				<input type="text" ng-model="sales.invoice_no">
+			</div>	
+			<div class="control">
+				<label>Invoice Date</label>
+				<input type="text" id="invoice_date" value="{{current_date}}" readonly>
+			</div>	
+			<div class="control">
+				<label>Salesman</label>
+				<input type="text" ng-model="salesman_name" ng-change="search_salesman()" ng-click="select_salesman_flag=true"> 
+				<div class="search_list" ng-show="select_salesman_flag">
+					<div class="search_list_item" ng-click="select_salesman_flag=false" ng-show="select_salesman_flag" ng-hide="!select_salesman_flag">
+						<span><a href="" ng-click="new_salesman(sales)">Create New</a></span>
+					</div>
+						<div ng-repeat="salesman in salesmen track by $index" class="search_list_item" ng-click="select_salesman(salesman)">
+						<span>[[salesman.name]]</span>
+					</div>
+				</div>
+				<p class="error_msg">[[no_salesman_message]]</p>
+			</div>
+			<div class="control">
+				<label>Customer</label>
+				<input type="text" ng-model="customer_name" ng-change="search_customer()" ng-click="select_customer_flag=true" />
+
+				<div class="search_list" ng-show="select_customer_flag">
+					<div class="search_list_item" ng-click="select_customer_flag=false" ng-show="select_customer_flag" ng-hide="!select_customer_flag">
+						<span><a href="" ng-click="new_customer(sales)">Create New</a></span>
+					</div>
+						<div ng-repeat="customer in customers track by $index" class="search_list_item" ng-click="select_customer(customer)">
+						<span>[[customer.name]]</span>
+					</div>
+				</div>
+				<p class="error_msg">[[no_customer_msg]]</p>
+			</div>
+			<div class="payment_mode">
+				<label>Bill type</label>
+				<div class="control">
+					<input type="radio" ng-model="sales.bill_type" value="Receipt" ng-click="change_bill_type('Receipt')"><label>Receipt</label>
+					<input type="radio" ng-model="sales.bill_type" value="Invoice" ng-click="change_bill_type('Invoice')"><label>Invoice</label>
+				</div> 
+			</div>
+			<div class="payment_mode">
+				<label>Payment Mode</label>
+				<div class="control">
+					<input type="radio" ng-model="sales.payment_mode" value="cash"><label>Cash</label>
+					<input type="radio" ng-model="sales.payment_mode" value="cheque" ng-click="bank_account_details('cheque')"><label>Cheque</label>
+					<input type="radio" ng-model="sales.payment_mode" value="card" ng-click="bank_account_details('card')"><label>Card</label>
+					<input type="radio" ng-model="sales.payment_mode" value="credit"><label>Credit</label>
+				</div> 
+			</div>
+			<br/>
+			<hr>
+			<table class="table list_table table-striped rules" ng-show="sales.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Stock </th>
+					<th> UOM </th>
+					<th> Quantity </th>
+					<th><input type="checkbox" ng-model="select_all_price_type" ng-click="change_price_type()">Whole Sale</th>
+					<th> MRP </th>
+					<th ng-show="sales.bill_type == 'Invoice'"> Tax </th>
+					<th> Net Amount </th>
+					<th> Remove </th>
+				</tr>
+				<tr ng-repeat="item in sales.items">
+					<td>[[$index+1]]</td>
+					<td>
+						<input type="text" ng-model="item.name" ng-change="search_items(item)" value="item.name"/>
+						<div ng-show="items.length > 0" class="search_list">
+							<div ng-repeat="item in items" class="search_list_item" ng-click="get_item_details(item)">
+							<span>[[item.item_name]]</span>
+							</div>
+						</div>
+					</td>
+					<td>[[item.code]]</td>
+					<td>
+						<input type="text" ng-change="search_batch(item)" ng-model="item.batch_name">
+						<div ng-show="item.batches.length > 0" class="search_list ">
+							<div ng-repeat="batch in item.batches" class="search_list_item" ng-click="select_batch(batch)">
+								<span>[[batch.batch_name]]</span>
+							</div>
+						</div>
+						<p class="error_msg">[[no_batch_msg]]</p>
+					</td>
+					<td>[[item.stock]] [[item.stock_unit]]</td>
+					<td>
+						<select ng-model="item.uom" ng-change="calculate_quantity_from_uom(item)" ng-options="selling_unit.unit as selling_unit.unit for selling_unit in item.selling_units">
+							<option value="" disabled>Select</option>
+							</option>
+						</select>
+					</td>
+					<td><input type="text" ng-model="item.quantity" ng-change="calculate_quantity_from_uom(item)"></td>
+					<td><input type="checkbox" ng-change="calculate_quantity_from_uom(item)" ng-model="item.price_type"></td>
+					<td>[[item.current_item_price]]</td>
+					<td ng-show="sales.bill_type == 'Invoice'">[[item.tax]]<span ng-show="item.tax > 0">%</span></td>
+					<td>[[item.net_amount]]</td>
+					<td><input class="" type="submit" value="Remove" ng-click="remove_item(item)"></td>
+				</tr> 
+			</table>	
+			<hr>		
+			<div class="control">
+				<label>Discount</label>
+				<input type="text" ng-model="sales.discount" ng-change="calculate_total_amount()">
+			</div>
+			<div class="control">
+				<label>Round Off</label>
+				<input type="text" ng-model="sales.round_off" ng-change="calculate_total_amount()">
+			</div>
+			<button ng-click="add_new_sales_item()">New Item</button>
+			<div class="control">
+				<label>Grant Total</label>
+				<input type="text" ng-model="sales.grant_total" readonly>
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[validate_sales_msg]]</p>
+				<input class="" type="submit" value="Save" ng-click="save_sales()">
+			</div>
+		</form>
+	</div>
+{% endblock %}

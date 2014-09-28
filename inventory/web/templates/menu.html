@@ -1,0 +1,198 @@
+<div class="right_container" ng-controller="MenuController" ng-init="init('{{csrf_token}}')" >
+    <div class="user_details">
+        <a class="username"> {{user}} </a>
+        <a href="{% url 'logout' %}" title="Logout" class="logout_button">  </a>
+    </div>
+    <div class="menu">
+		<ul>
+			{% if user.is_superuser %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed"> 
+						<a href=""> Administration </a>
+					</span>
+					<ul>
+						<li>
+							<span ng-click="show_submenu($event);" class="submenu_closed">	<a href="">Staffs</a> 
+							</span>
+							<ul>
+								<li> <a href="{% url 'staffs' %}">Staffs</a> </li>
+								<li> <a href="{% url 'permissions' %}">Permissions</a> </li>
+								<li> <a href="{% url 'salesmen' %}">Salesmen</a> </li>
+								<li> <a href="{% url 'incentives' %}">Incentives</a> </li>
+							</ul>
+						</li>
+						
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Settings </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'uom_conversion' %}">UOM Conversion</a> </li>
+							</ul> 
+						</li>
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Sales </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'sales_receipts' %}">Receipts</a> </li>
+							</ul> 
+						</li>
+					</ul>
+				</li>
+			{% endif %}
+			{% if user.is_superuser or user.staff_set.all.0.permission.accounts_permission %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed"> 
+						<a href=""> Accounts </a>
+					</span>
+					<ul>
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed">
+								<a href="">Chart Of Accounts </a>
+							</span>
+							<ul>
+									<li> <a href="{% url 'ledgers' %}">List View</a></li>
+									<li> <a href="{% url 'ledgers_tree_view' %}">Tree View</li>
+							</ul>
+						</li>
+						<li> <a href="{% url 'create_payment' %}">Payments </a></li>
+						<li> <a href="{% url 'create_receipt' %}">Receipts </a></li>
+						<li> <a href="{% url 'other_transaction' %}">Other Transactions </a></li>
+						<li> <a href="{% url 'opening_balance' %}">Opening Balance </a></li>	
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Reports </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'day_book' %}">Day Book </a> </li>
+								<li> <a href="{% url 'cash_book' %}">Cash Book </a> </li>
+								<li> <a href="{% url 'bank_book' %}">Bank Book </a> </li>
+								<li> <a href="{% url 'trial_balance' %}" target="_blank">Trial Balance</a> </li>
+								<li> <a href="{% url 'profit_and_loss_statement' %}" target="_blank">P&L Statement</a> </li>
+								<li> <a href="{% url 'balance_sheet' %}" target="_blank">Balance Sheet </a> </li>
+								<li> <a href="{% url 'ledger_report' %}">Ledger Report </a> </li>
+							</ul>	
+						</li>				
+					</ul>
+				</li>
+			{% endif %}
+			{% if user.is_superuser or user.staff_set.all.0.permission.customers %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed">
+						<a href=""> Customers </a>
+					</span>
+					<ul>
+						<li> <a href="{% url 'customer_list' %}">Customer List </a> </li>
+						<li> <a href="{% url 'accounts_receivable' %}">A/c Receivable </a> </li>
+						<li> <a href="{% url 'received_report' %}">Received Report </a> </li>
+						<!-- <li> <a href="">Duedate Report </a> </li>
+						<li> <a href="">A/c Summary </a> </li> -->
+					</ul>
+				</li>
+			{% endif %}
+			{% if user.is_superuser or user.staff_set.all.0.permission.suppliers %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed">
+						<a href=""> Suppliers </a>
+					</span>
+					<ul>
+						<li> <a href="{% url 'supplier_list' %}">Supplier List </a> </li>
+						<li> <a href="{% url 'account_payable' %}">A/c Payable </a> </li>
+						<!-- <li> <a href="">A/c Summary </a> </li> -->
+						<!-- <li> <a href="">Duedate Report </a> </li> -->
+					</ul>
+				</li>
+			{% endif %}
+			{% if user.is_superuser or user.staff_set.all.0.permission.inventory_permission %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed">
+						<a href=""> Inventory </a>
+					</span>
+					<ul>
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed">
+								<a href="">Categories </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'categories' %}">List View</a></li>
+								<li> <a href="{% url 'categories_tree_view' %}">Tree View</a></li>
+							</ul>
+						</li>
+						<li><a href="{% url 'products' %}">Products </a>
+						</li>
+						<li> <a href="{% url 'brands' %}">Brands </a></li>
+						<li><a href="{% url 'vat' %}">Vat Type</a></li>
+						<li> <a href="{% url 'items' %}">Items </a></li>
+						<li> <a href="{% url 'batches' %}">Batches </a></li>
+						<li> <a href="{% url 'opening_stock' %}">Opening Stock </a></li>
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Reports </a>
+							</span>
+							<ul>
+								<li><a href="{% url 'all_stock_report' %}" target="_blank"> Stock</a></li>
+								<li><a href="{% url 'stock_report' %}">Batch Wise </a></li>
+								<li> <a href="{% url 'stock_aging_report' %}">Aging Report </a> </li>
+							</ul>	
+						</li>		
+					</ul> 
+				</li>
+			{% endif %}
+			{% if user.is_superuser or user.staff_set.all.0.permission.purchase_permission %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed"> 
+						<a href=""> Purchase </a> 
+					</span>
+					<ul>
+						<li> <a href="{% url 'purchase_entry' %}">Purchase Entry </a></li>
+						<li> <a href="{% url 'purchase_view' %}">View Purchase </a></li>
+						<li> <a href="{% url 'purchase_return_entry' %}">Purchase Return </a></li>
+						<li> <a href="{% url 'purchase_return_view' %}"> Purchase Return View</a></li>
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Reports </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'purchase_report' %}">Purchase </a> </li>
+								<li> <a href="{% url 'purchase_return_report' %}">Purchase Return </a> </li>	
+							</ul>	
+						</li>		
+					</ul>
+				</li>
+			{% endif %}
+			{% if user.is_superuser or user.staff_set.all.0.permission.sales_permission %}
+				<li> 
+					<span ng-click="show_submenu($event);" class="submenu_closed"> 
+						<a href=""> Sales </a>
+					</span>
+					<ul>
+						<li> <a href="{% url 'sales_entry' %}">Sales Entry </a></li>
+						<li> <a href="{% url 'sales_return_entry' %}">Sales Return </a></li>
+						<li> <a href="{% url 'sales_view' %}">View Sales</a></li>
+						<li> <a href="{% url 'sales_return_view' %}">View Sales Return</a></li>
+						<li>
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Estimate </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'estimate_entry' %}">Estimate Entry </a></li>
+								<li> <a href="{% url 'estimate_view' %}">Estimate View </a></li>
+							</ul>
+						</li>
+						<li> 
+							<span ng-click="show_submenu($event);" class="submenu_closed"> 
+								<a href=""> Reports </a>
+							</span>
+							<ul>
+								<li> <a href="{% url 'sales_report' %}">Sales </a> </li>
+								<li> <a href="">Sales Return </a> </li>
+							</ul>	
+						</li>		
+					</ul>
+				</li>
+			{% endif %}
+		</ul>
+	</div>
+	<span class="menu_toggler open" ng-click="toggle_menu('.right_container');"></span>
+</div>

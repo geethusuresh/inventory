@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block body_id %}purchase_return{% endblock %}
+{% block title %} Purchase Return {% endblock title%}
+{% block controller %} ng-controller="PurchaseReturnController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'show_transaction_details.html' %} 
+           
+{% endblock %}
+{% block extrahead %}
+	<script>
+		$(function() {
+			$( "#invoice_date" ).datepicker();
+			$( "#cheque_date" ).datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+	
+	<h2> Purchase Return </h2>
+	<div class="form_container wide_form">
+		<form name="purchase_return_form">	
+			<div class="control">
+				<label>Purchase Invoice No</label>
+				<input type="text" ng-model="purchase_invoice" ng-change="get_purchase_details()"> 
+				<p class="error_msg">[[no_purchase_message]]</p>
+			</div>		
+			<div class="control">
+				<label>Return Invoice No</label>
+				<input type="text" ng-model="purchase_return.return_invoice">
+			</div>	
+			<div class="control">
+				<label>Return Invoice Date</label>
+				<input type="text" id="invoice_date">
+			</div>	
+			<div class="control">
+				<label>Supplier</label>
+				<input type="text" ng-model="purchase_return.supplier" readonly> 
+			</div>
+			
+			<br/>
+			<hr ng-show="purchase_return.items.length > 0">
+			<button ng-click="add_new_purchase_return_item()">New Item</button>
+			<button ng-click="load_all_items()">Load All Items</button>
+			<p class="error_msg">[[item_selected_msg]]</p>
+			<table class="table list_table table-striped rules" ng-show="purchase_return.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Stock </th>
+					<th> Purchased Qty </th>
+					<th> Returned Qty </th>
+					<th> Uom </th>
+					<th> Purchase Price </th>
+					<th> Quantity </th>
+					<th> Net Amount </th>
+					<th> Remove </th>
+				</tr>
+				<tr ng-repeat="item in purchase_return.items">
+					<td>[[$index+1]]</td>
+					<td>
+						<input type="text" ng-model="item.name" ng-change="get_purchase_item_details(item)"/>
+						<div class="search_list" ng-show="item.items.length > 0">
+							<div ng-repeat="item_data in item.items" class="search_list_item" ng-click="select_purchase_item(item_data)">
+								<span>[[item_data.item_name]]</span>
+							</div>
+						</div>
+						<p class="error_msg">[[no_supplier_msg]]</p>
+					</td>
+					<td>[[item.code]]</td>
+					<td>[[item.batch_name]]</td>
+					<td>[[item.stock]]</td>
+					<td>[[item.purchased_quantity]]</td>
+					<td>[[item.returned_qty]]</td>
+					<td>[[item.purchase_unit]]</td>
+					<td>[[item.purchase_price]]</td>
+					<td><input type="text" ng-model="item.quantity" ng-change="calculate_net_amount(item)"></td>
+					<td><input type="text" ng-model="item.net_amount" readonly></td>
+					<td><a href="" ng-click="remove_purchase_return_item(item)">X</a></td>
+				</tr> 
+			</table>	
+			<hr ng-show="purchase_return.items.length > 0">		
+			
+			<div class="button_control control">
+				<label>Grant Total</label>
+				<input type="text" ng-model="purchase_return.grant_total" readonly>
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[validate_purchase_return_msg]]</p>
+				<input class="" type="submit" value="Save" ng-click="save_purchase_return()">
+			</div>
+		</form>
+	</div>
+{% endblock content%}

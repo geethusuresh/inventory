@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %} Received Report {% endblock title%}
+{% block body_id %}receivedreports{% endblock %}
+{% block controller %} ng-controller="ReceivedReportController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+ <script>
+	$(function() {
+	$( "#start_date" ).datepicker();
+	$( "#end_date" ).datepicker();
+	});
+</script>
+<h2>Received Report </h2>
+<div class="form_container single_column_container">
+	<form>
+		<div class="control">
+			<label>Start date</label>
+			<input type="text" id="start_date"ng-model="start_date"/>
+		</div>
+		<div class="control">
+			<label>End date</label>
+			<input type="text" id="end_date" ng-model="end_date"/>
+		</div>
+	</form>
+	<div class="button_control">
+		<p class="error_msg">[[validate_error_msg]]</p>
+		<button ng-click="view_ledger()">View</button>
+		<button  ng-click="get_received_report()" >Generate PDF</button>
+	</div>
+</div>
+<table ng-show="ledger_entries.length > 0" class="table list_table">
+	<tr>
+		<th>#</th>
+		<th>Date</th>
+		<th>Customer Name</th>
+		<th>D.r</th>
+		<th>C.r</th>
+	</tr>
+	<tr ng-repeat="ledger_entry in visible_list">
+		<td>[[ledger_entry.count]]</td>
+		<td>[[ledger_entry.date]]</td>
+		<td>[[ledger_entry.customer_name]]</td>
+		<td>[[ledger_entry.debit_amount]]</td>
+		<td>[[ledger_entry.credit_amount]]</td>
+	</tr>
+	
+	</table>
+	
+	<div ng-show="ledger_entries.length > 1 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock title%}
+{% block controller %} 
+	ng-controller="HomeController" ng-init="init('{{csrf_token}}')" 
+{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'shope_details.html' %}
+{% endblock %}
+
+{% block content %}
+	<div class="shop_details">
+		<p> {{today}} </p>
+		<p> [[shope.name]] </p>
+		<p> [[shope.address]] </p>
+		<p> [[shope.email]] </p>
+		<p> [[shope.contact_no]] </p>
+		<p> Current Stock (By Value): {{stock}} </p>
+	</div>
+{% endblock content %}

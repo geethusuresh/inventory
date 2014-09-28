@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %} Ledger Report {% endblock title%}
+{% block body_id %}ledgerreports{% endblock %}
+{% block controller %} ng-controller="LedgerReportController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+ <script>
+	$(function() {
+	$( "#start_date" ).datepicker();
+	$( "#end_date" ).datepicker();
+	});
+</script>
+<h2> Ledger Report </h2>
+<div class="form_container single_column_container">
+	<form>
+		<div class="control">
+			<label>Ledger</label>
+			<input type="text" name="ledger_name" ng-model="ledger_name" ng-change="get_ledger_list()" ng-disabled="ledger.id" autocomplete="off">
+			<div ng-show="ledgers_list.length > 0" class="search_list">
+				<div ng-repeat="ledger in ledgers_list" class="search_list_item" ng-click="get_ledger_details(ledger)">
+					<span>[[ledger.name]]</span>
+				</div>
+			</div>
+			<p class="error_msg">[[no_ledger_msg]]</p>
+		</div>
+		<div class="control">
+			<label>Start date</label>
+			<input type="text" id="start_date"ng-model="start_date"/>
+		</div>
+		<div class="control">
+			<label>End date</label>
+			<input type="text" id="end_date" ng-model="end_date"/>
+		</div>
+	</form>
+	<div class="button_control">
+		<p class="error_msg">[[validate_error_msg]]</p>
+		<button ng-click="view_ledger()">View</button>
+		<button  ng-click="get_ledger_report()" >Generate PDF</button>
+	</div>
+</div>
+<table ng-show="ledger_entries.length > 0" class="table list_table">
+	<tr>
+		<th>#</th>
+		<th>Date</th>
+		<th>Ref No</th>
+		<th>Particulars</th>
+		<th>Debit Amount</th>
+		<th>Credit Amount</th>
+	</tr>
+	<tr ng-repeat="ledger_entry in visible_list">
+		<td>[[$index+1]]</td>
+		<td>[[ledger_entry.date]]</td>
+		<td>[[ledger_entry.transaction_ref]]</td>
+		<td ng-show="ledger_entry.credit_ledger==ledger_name"> Debit By [[ledger_entry.debit_ledger]]</td>
+		<td ng-show="ledger_entry.debit_ledger==ledger_name"> Credit By [[ledger_entry.credit_ledger]]</td>
+		<td><span ng-show="ledger_entry.credit_ledger==ledger_name">[[ledger_entry.debit_amount]]</span></td>
+		<td><span ng-show="ledger_entry.debit_ledger==ledger_name">[[ledger_entry.credit_amount]]</span></td>
+	</tr>
+	
+	</table>
+	
+	<div ng-show="ledger_entries.length > 1 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

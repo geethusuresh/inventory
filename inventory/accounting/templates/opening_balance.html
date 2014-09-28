@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %} Opening Balance {% endblock title%}
+{% block body_id %}opening_balance{% endblock %}
+{% block controller %} ng-controller="OpeningBalanceController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+	<h2> Opening Balance </h2>
+	<div class="form_container single_column_container">
+		<form>
+			<div class="control">
+				<label>Account</label>
+				<input type="text" name="ledger_name" ng-model="opening_balance.ledger_name" ng-change="get_ledger_list()" ng-disabled="ledger.id" autocomplete="off" />
+				<div ng-show="ledgers_list.length > 0" class="search_list">
+					<div ng-repeat="ledger in ledgers_list" class="search_list_item" ng-click="get_ledger_details(ledger)">
+						<span>[[ledger.name]]</span>
+					</div>
+				</div>
+			</div>
+			<div class="control">
+				<label>Amount</label>
+				<input type="text" name="amount" ng-model="opening_balance.amount">
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[validate_error_msg]]</p>
+				<p class="error_msg">[[no_ledger_msg]]</p>
+				<button ng-click="save_opening_balance()" >Save</button>
+			</div>
+		</form>
+	</div>
+
+{% endblock content %}	

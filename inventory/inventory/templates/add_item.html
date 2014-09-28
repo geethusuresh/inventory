@@ -1,0 +1,65 @@
+<div class="form_container" id="add_item">
+	<form name="item_form">
+		<div class="control">
+			<label>Item Name</label>
+			<input type="text" ng-model="item.name" />
+		</div>
+		<div class="control">
+			<label>Product</label>
+			<input type="text" ng-model="product_name" ng-change="get_products()"/>
+			<div ng-show="products.length > 0" class="search_list">
+				<div ng-repeat="product in products" class="search_list_item" ng-click="select_product_details(product)">
+					<span>[[product.name]] - [[product.category_name]]</span>
+				</div>
+			</div>
+		</div>
+		<div class="control">
+			<label>Brand</label>
+			<input type="text" ng-model="brand_name" ng-change="get_brands()"/>
+			<div ng-show="brands.length > 0" class="search_list">
+				<div ng-repeat="brand in brands" class="search_list_item" ng-click="select_brand_details(brand)">
+					<span>[[brand.name]]</span>
+				</div>
+			</div>
+		</div>
+		<div class="control">
+			<label>Vat Type</label>
+			<input type="text" ng-model="vat_type" ng-change="get_vat_list()"/>
+			<div ng-show="vat_list.length > 0" class="search_list">
+				<div ng-repeat="vat in vat_list" class="search_list_item" ng-click="select_vat_details(vat)">
+					<span>[[vat.vat_name]]</span>
+				</div>
+			</div>
+		</div>
+		<div class="control">
+			<label>Cess</label>
+			<input type="text" ng-model="item.cess"/>
+		</div>
+		<div class="control">
+			<label>Size</label>
+			<input type="text" ng-model="item.size"/>
+		</div>
+		<div class="control">
+			<label>Barcode</label>
+			<input type="text" ng-model="item.barcode"/>
+		</div>
+		<div class="control">
+			<label>Description</label>
+			<textarea ng-model="item.description"></textarea>
+		</div>
+		<div class="control">
+			<label>Offer quantity</label>
+			<input type="text" ng-model="item.offer_quantity"/>
+			<p> <br />(Price will be converted to whole sale price if quantity is above the offer quantity at the time of sales) </p>
+
+		</div>
+		<div class="button_control">
+			<p class="error_msg">[[no_product_msg]]</p>
+			<p class="error_msg">[[no_brand_msg]]</p>
+			<p class="error_msg">[[no_vat_msg]]</p>
+			<p class="error_msg">[[validate_item_error_msg]]</p>
+			<input type="submit" value="Save" ng-click="save_item()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()">
+		</div>
+	</form>
+</div>

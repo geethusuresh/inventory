@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block body_id %}estimate_view{% endblock %}
+{% block title %} Estimate View {% endblock title%}
+{% block controller %} ng-controller="EstimateViewController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+	<h2> Estimate View </h2>
+	<div class="form_container wide_form">
+		<form name="sales_form">	
+			
+			<div class="control">
+				<label>Estimate No</label>
+				<input type="text" ng-model="estimate_no" ng-change="get_estimate_details()">
+			</div>	
+			<div class="control">
+				<label>DO No:</label>
+				<label>[[estimate.do_no]]</label>
+			</div>	
+			<div class="control">
+				<label>Estimate Date:</label>
+				<label>[[estimate.estimate_date]]</label>
+				
+			</div>	
+			<div class="control">
+				<label>Salesman:</label>
+				<label>[[estimate.salesman]]</label>
+				
+			</div>
+			<div class="control">
+				<label>Customer:</label>
+				<label>[[estimate.customer]]</label>
+				
+			</div>
+			<div class="payment_mode">
+				<label>Estimate type</label>
+				<div class="control">
+					<input type="radio" ng-model="estimate.bill_type" value="Tax Inclusive" disabled="true"><label>Taxable</label>
+					<input type="radio" ng-model="estimate.bill_type" value="Tax Exclusive" disabled="true"><label>Non Taxable</label>
+				</div> 
+			</div>
+			<!-- <div class="payment_mode">
+				<label>Payment Mode</label>
+				<div class="control">
+					<input type="radio" ng-model="estimate.payment_mode" value="cash"disabled="true"><label>Cash</label>
+					<input type="radio" ng-model="estimate.payment_mode" value="cheque" disabled="true"><label>Cheque</label>
+					<input type="radio" ng-model="estimate.payment_mode" value="card" disabled="true"><label>Card</label>
+					<input type="radio" ng-model="estimate.payment_mode" value="credit" disabled="true"><label>Credit</label>
+				</div> 
+			</div> -->
+			<br/>
+			<hr>
+			<table class="table list_table table-striped rules" ng-show="estimate.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					
+					<th> UOM </th>
+					<th> Quantity </th>
+					
+					<th> MRP </th>
+					<th ng-show="estimate.bill_type == 'Tax Inclusive'"> Tax </th> 
+					<th> Net Amount </th>
+					
+				</tr>
+				<tr ng-repeat="item in estimate.items">
+					<td>[[$index+1]]</td>
+					<td>[[item.name]]</td>
+					
+					<td>[[item.code]]</td>
+					<td>[[item.batch_name]]</td>
+					
+					<td>[[item.stock_unit]]</td>
+					<td>[[item.quantity]]</td>
+					<td>[[item.mrp]]</td>
+					<td ng-show="estimate.bill_type == 'Tax Inclusive'">[[item.tax_percentage]]<span ng-show="item.tax_percentage > 0">%</span></td>
+					<td>[[item.net_amount]]</td>
+				</tr> 
+			</table>	
+			<hr>		
+			<div class="button_control control">
+				<label>Discount:</label>
+				<label>[[estimate.discount]]</label>
+			</div>
+			
+			<div class="button_control control">
+				<label>Grant Total:</label>
+				<label>[[estimate.grant_total]]</label>
+			</div>
+			
+		</form>
+	</div>
+{% endblock %}

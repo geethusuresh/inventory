@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block body_id %}uom_conversion{% endblock %}
+{% block title %} UOM Conversion {% endblock title%}
+{% block controller %} ng-controller="UOMConversionController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+{% endblock %}
+{% block content %}	
+
+	<h2>UOM Conversion</h2>
+	<div class="form_container single_column_container">
+		<form>
+			<div class="control">
+				<label> Purchase Unit </label>
+				<select ng-model="conversion.purchase_unit">
+					<option ng-repeat="uom in uoms" value="[[uom]]">[[uom]]</option>
+				</select>
+			</div>
+			<div class="control">
+				<label> Sales Unit </label>
+				<select ng-model="conversion.sales_unit">
+					<option ng-repeat="uom in uoms" value="[[uom]]">[[uom]]</option>
+				</select>
+			</div>
+			<div class="control">
+				<label> Relation </label>
+				<span ng-show="conversion.purchase_unit && conversion.sales_unit"> 
+					1 [[conversion.purchase_unit]] = <input type="text" ng-model="conversion.relation" /> [[conversion.sales_unit]]
+				</span>
+			</div>
+			<div class="button_control">
+				<input type="submit" value="Save" ng-click="save_conversion()" />
+			</div>
+		</form>
+	</div>
+	<!-- <div class="search">
+		<label>Search Batch</label>
+		<input type="text" name="batch_name" ng-model="conversion" ng-change="get_batch_list()" >
+		<p class="error_msg">[[no_batch_msg]]</p>
+	</div> -->
+	<table ng-show="conversions.length > 0" class="table list_table">
+		<tr>
+			<th>Purchase Unit</th>
+			<th>Sales Unit</th>
+			<th>Relation</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="conversion in conversions">
+			<td>[[conversion.purchase_unit]]</td>
+			<td>[[conversion.sales_unit]]</td>
+			<td>1 [[conversion.purchase_unit]] = [[conversion.relation]] [[conversion.sales_unit]]</td>
+			<td><a href="" ng-click="edit_conversion(conversion)">Edit</a></td>
+			<td><a href="" ng-click="delete_conversion(conversion)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="conversions.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %} Day Book {% endblock title%}
+{% block body_id %}day_book{% endblock %}
+{% block controller %} ng-controller="DayBookController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+ <script>
+	$(function() {
+	$( "#select_date" ).datepicker();
+	});
+</script>
+	<h2> Day Book </h2>
+	<div class="form_container single_column_container">
+		<form>
+			<div class="control">
+				<label>Select Date </label>
+				<input type="text" value="{{current_date}}" id="select_date" readonly>
+			</div>
+			<div class="control">
+				<label>Filter Ledger </label>
+				<input type="text" name="ledger_name" ng-model="ledger_name" ng-change="get_ledger_list()" ng-disabled="ledger.id" autocomplete="off">
+				<div ng-show="ledgers_list.length > 0" class="search_list">
+					<div ng-repeat="ledger in ledgers_list" class="search_list_item" ng-click="get_ledger_details(ledger)">
+						<span>[[ledger.name]]</span>
+					</div>
+				</div>
+				<p class="error_msg">[[no_ledger_msg]]</p>
+			</div>
+			<div class="button_control">
+				<button ng-click="view_day_book()">View</button>
+				<button ng-click="generate_pdf()">Generate PDF</button>
+			</div>
+			<p class="error_msg">[[validate_error_msg]]</p>
+		</form>		
+	</div>
+	<table ng-show="ledger_entries.length > 0" class="table list_table">
+			<tr>
+				<th>#</th>
+				<th>Date</th>
+				<th>Ref No</th>
+				<th>Particulars</th>
+				<th>Debit Amount</th>
+				<th>Credit Amount</th>
+			</tr>
+			<tr ng-repeat="ledger_entry in ledger_entries">
+				<td>[[$index+1]]</td>
+				<td>[[ledger_entry.date]]</td>
+				<td>[[ledger_entry.transaction_ref]]</td>
+				<td>[[ledger_entry.debit_ledger]] [[ledger_entry.credit_ledger]]</td>
+				<td>[[ledger_entry.debit_amount]]</td>
+				<td>[[ledger_entry.credit_amount]]</td>
+			</tr>
+		</table>
+
+{% endblock content %}	

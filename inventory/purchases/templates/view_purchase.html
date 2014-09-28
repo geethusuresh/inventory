@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block body_id %}purchase_view{% endblock %}
+{% block title %} Purchase View{% endblock title%}
+{% block controller %} ng-controller="PurchaseViewController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'show_payment_mode_details.html' %}        
+{% endblock %}
+{% block content %}
+	<h2> View Purchase </h2>
+	<div class="form_container wide_form">
+		<form name="purchase_form">	
+			<p class="error_msg">[[purchase_error_message]]</p>
+			<div class="control">
+				<label>Reference No</label>
+				<input type="text" ng-model="invoice_no" ng-change="get_purchase_details()">
+			</div>
+			<div class="control">
+				<label>Invoice No :</label>
+				<label>[[purchase.invoice_no]]</label>
+			</div>	
+			<div class="control">
+				<label>Transaction :</label>
+				<label>[[purchase.transaction_ref]]</label>
+			</div>		
+			<div class="control">
+				<label>DO No :  </label>
+				<label>[[purchase.do_no]]</label>
+			</div>		
+			<div class="control">
+				<label>Invoice Date: </label>
+				<label>[[purchase.invoice_date]]</label>
+			</div>	
+			<div class="control">
+				<label>Supplier:</label>
+				<label>[[purchase.supplier]]</label>
+			</div>
+			<div class="payment_mode">
+				<label>Payment Mode:</label>
+				<div class="control">
+					<input type="radio" ng-model="purchase.payment_mode" value="cash" disabled="true"/><label>Cash</label>
+					<input type="radio" ng-model="purchase.payment_mode" value="cheque" disabled="true"/><label>Cheque</label>
+					<input type="radio" ng-model="purchase.payment_mode" value="card" disabled="true"/><label>Card</label>
+					<input type="radio" ng-model="purchase.payment_mode" value="credit" disabled="true"/><label>Credit</label>
+				</div> 
+			</div>
+			<br/>
+			<hr>
+			<button ng-click="show_payment_details()" ng-show="purchase.payment_mode == 'cheque' || purchase.payment_mode == 'card'">View Payment Details</button>
+			<table class="table list_table table-striped rules" ng-show="purchase.items.length > 0">
+				<tr>
+					<th>#</th>
+					<th> Item Name </th>
+					<th> Code </th>
+					<th> Batch </th>
+					<th> Stock </th>
+					<th> Purchase Unit </th>
+					<th> Quantity </th>
+					<th> Unit Purchase Price </th>
+					<th> Unit Wholesale Price </th>
+					<th> Unit Retail Price </th>
+					<th> Unit Cost Price </th>
+					<th> Unit Whole Sale Profit </th>
+					<th> Unit Retail Profit </th>
+					<th> Sales Unit Conversion </th>
+					<th> Net Amount </th>
+				</tr>
+				<tr ng-repeat="item in purchase.items track by $index">
+					<td>[[$index+1]]</td>
+					<td>[[item.name]]</td>
+					<td>[[item.code]]</td>
+					<td>[[item.batch_name]]</td>
+					<td>[[item.stock]]</td>
+					<td>[[item.purchase_unit]]</td>
+					<td>[[item.quantity]] </td>
+					<td>[[item.purchase_price]] </td>
+					<td>[[item.whole_sale_price]] </td>
+					<td>[[item.retail_price]] </td>
+					<td>[[item.cost_price]] </td>
+					<td>[[item.whole_sale_profit]]</td>
+					<td>[[item.retail_profit]]</td>
+					<td>[[item.conversion_unit_name]]</td>
+					<td>[[item.net_amount]]</td>
+				</tr> 
+			</table>	
+			<hr>		
+			<div class="control">
+				<label>Discount:</label>
+				<label>[[purchase.discount]]</label>
+			</div>
+			<div class="control">
+				<label>Purchase Tax:</label>
+				<label>[[purchase.purchase_tax]]</label>
+			</div>
+			<div class="control">
+				<label>Grant Total:</label>
+				<label>[[purchase.grant_total]]</label>
+			</div>
+		</form>
+	</div>
+{% endblock %}

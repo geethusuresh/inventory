@@ -1,0 +1,24 @@
+<div class="form_container single_column_container" id="new_ledger">
+	<form name="ledger_form">
+		<div class="control">
+			<label>Parent Ledger</label>
+			<input type="text" name="ledger_name" ng-model="ledger_name" ng-change="get_ledger_list()" ng-disabled="ledger.id" autocomplete="off" />
+			<div ng-show="ledgers_list.length > 0" class="search_list">
+				<div ng-repeat="ledger in ledgers_list" class="search_list_item" ng-click="get_ledger_details(ledger)">
+					<span>[[ledger.name]]</span>
+				</div>
+			</div>
+			<p class="error_msg">[[no_ledger_msg]]</p>
+		</div>
+
+		<div class="control">
+			<label>New Ledger</label>
+			<input type="text" ng-model="ledger.name"/>
+		</div>
+		<div class="button_control">
+			<p class="error_msg">[[validate_ledger_error_msg]]</p><br/>
+			<input type="submit" value="Save" ng-click="save_ledger()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()"><br/>
+		</div>
+	</form>
+</div>

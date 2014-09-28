@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block body_id %}categories{% endblock %}
+{% block title %} Categories {% endblock title%}
+{% block controller %} ng-controller="CategoryController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_category.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2> Categories </h2>
+	<button ng-click="create_category()" class="create_new">Create</button>
+	<div class="search">
+		<label>Search Categories</label>
+		<input type="text" name="category_name" ng-model="category_name" ng-change="get_category_list()" >
+		<p class="error_msg">[[no_category_msg]]</p>
+	</div>
+	<table ng-show="categories.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="category in visible_list">
+			<td>[[category.name]]</td>
+			<!-- <td><a href="" ng-click="view_category_details(category)">View</a></td> -->
+			<td><a href="" ng-click="edit_category_details(category)">Edit</a></td>
+			<td><a href="" ng-click="delete_category(category)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="categories.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+
+{% endblock content %}

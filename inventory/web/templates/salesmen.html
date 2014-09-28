@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %} Salesmen {% endblock title%}
+{% block body_id %}salesmen{% endblock %}
+{% block controller %} ng-controller="SalesmenController" ng-init="init('{{ csrf_token }}')" 
+{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_salesman.html' %}
+{% endblock %}
+{% block content %}
+	<h2> Salemen </h2>
+	<button ng-click="create_salesman()" class="create_new">Add New Salesman</button>
+	<div class="search">
+		<label>Search Salesmen</label>
+		<input type="text" name="salesman_name" ng-model="salesman_name" ng-change="get_salesmen_list()" >
+		<p class="error_msg">[[no_salesman_message]]</p>
+	</div>
+	<table ng-show="salesmen.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>View/Edit</th>
+			<th>Delete</th>
+		</tr>
+		<tr ng-repeat="salesman in salesmen">
+			<td>[[salesman.name]]</td>
+			<td><a href="" ng-click="edit_salesman_details(salesman)">View/Edit</a></td>
+			<td><a href="" ng-click="delete_salesman(salesman)">Delete</a></td>
+		</tr>
+	</table>
+	<div ng-show="salesmen.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %} 

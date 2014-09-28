@@ -1,0 +1,32 @@
+<div class="form_container single_column_container" id="payment_details">
+	<h2 ng-hide="is_cheque">Card Details</h2>
+	<h2 ng-show="is_cheque">Cheque Details</h2>
+	<div class="control">
+		<label>Bank Name</label>
+		<input type="text" ng-model="bank_name">
+	</div>
+	<div class="control" ng-show="is_cheque_payment">
+		<label>Branch Name</label>
+		<input type="text" ng-model="branch">
+	</div>
+	<div class="control" ng-show="is_cheque_payment">
+		<label>Cheque Number</label>
+		<input type="text" ng-model="cheque_no" >
+	</div>
+	<div class="control" ng-show="is_cheque_payment">
+		<label>Cheque Date</label>
+		<input type="text" id="cheque_date">
+	</div>
+	<div class="control" ng-hide="is_cheque_payment">
+		<label>Card Number</label>
+		<input type="text" ng-model="card_no" >
+	</div>
+	<div class="control" ng-hide="is_cheque_payment">
+		<label>Card Holder Name</label> 
+		<input type="text" ng-model="card_holder_name" >
+	</div>
+	<div class="button_control">
+		<input type="submit" ng-click="hide_popup_payment_details()" value="Ok"/>
+		<input type="submit" ng-click="hide_popup_payment_details()" value="Cancel"/>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Permissions{% endblock title%}
+{% block body_id %}permissions{% endblock body_id%}
+{% block controller %}ng-controller="PermissionController" ng-init="init('{{csrf_token}}')" {% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_staff.html' %}
+{% endblock %}
+
+{% block content %}
+	<h2>Permissions</h2>
+	<div class="form_container single_column_container">
+		<div class="control">
+			<label>Staff</label>
+			<input type="text" ng-model="staff_name" ng-change="search_staff()" ng-click="select_staff_flag=true">
+			<div ng-show="select_staff_flag" class="search_list">
+				<div class="search_list_item" ng-click="select_staff_flag=false">
+					<span><a href="" ng-click="new_staff()">New</a></span>
+				</div>
+				<div ng-repeat="staff in staffs" class="search_list_item" ng-click="get_staff_details(staff)">
+					<span>[[staff.name]]</span>
+				</div>
+			</div>
+		</div>
+		
+		
+		<br> 
+		<p class="error_msg">[[no_staff_message]]</p>
+		<input type="checkbox" ng-model="permission.accounts_permission">
+		<label>Accounts Permission</label><br>
+		<input type="checkbox" ng-model="permission.inventory_permission">
+		<label>Inventory Permission</label><br>
+		<input type="checkbox" ng-model="permission.sales_permission">
+		<label>Sales Permission</label><br>
+		<input type="checkbox" ng-model="permission.purchase_permission">
+		<label>Purchase Permission</label><br>
+		<input type="checkbox" ng-model="permission.suppliers">
+		<label>Suppliers Permission</label><br>
+		<input type="checkbox" ng-model="permission.customers">
+		<label>Customers Permission</label><br>
+		<p class="error_msg">[[validate_staff_permission]]</p>
+		<input type="submit" value="Set Permission" ng-click="save_permissions()">
+	</div>
+
+{% endblock %}

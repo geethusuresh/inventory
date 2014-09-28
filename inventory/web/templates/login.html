@@ -1,0 +1,12 @@
+<html>
+	<div>
+		<form name="login_form" method="post" action="{% url 'login' %}"> {% csrf_token %}
+			<label>Username</label> <br>
+			<input type="text" name="username" value="{{username}}"><br>
+			<label>Password</label><br>
+			<input type="password" name="password"><br>
+			<input type="submit" value="Submit">
+		</form>
+		<p>{{message}}</p>
+	</div>
+</html>

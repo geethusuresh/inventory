@@ -1,0 +1,30 @@
+
+<div class="form_container single_column_container" id="add_customer">
+	<form name="customer_form">
+		<div class="control">
+			<label>Name</label>
+			<input type="text" ng-model="customer.name"/>
+		</div>
+		<div class="control">
+			<label>Address</label>
+			<input type="text" ng-model="customer.address"/>
+		</div>
+		<div class="control">
+			<label>Mobile</label>
+			<input type="text" ng-model="customer.mobile"/>
+		</div>
+		<div class="control">
+			<label>Telephone Number</label>
+			<input type="text" ng-model="customer.telephone_number"/>
+		</div>
+		<div class="control">
+			<label>Email</label>
+			<input type="text" ng-model="customer.email"/>
+		</div>		
+		<div class="button_control">
+			<p class="error_msg">[[validate_customer_error_msg]]</p><br/>
+			<input type="submit" value="Save" ng-click="save_customer()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()">
+		</div>
+	</form>
+</div>

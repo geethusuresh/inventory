@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Sub Ledgers {% endblock title%}
+{% block body_id %}subledgers{% endblock %}
+{% block controller %} ng-controller="LedgerController" ng-init="init('{{csrf_token}}', '{{ledger_id}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_ledger.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2>Sub Ledgers of [[ ledger_details.name ]]</h2>
+	<button ng-click="create_ledger()" class="create_new">Create</button>
+	<table ng-show="ledger_details.sub_ledgers.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>View Subledgers</th>
+			<!-- <th>Edit</th>
+			<th>Delete</th> -->
+		</tr>
+		<tr ng-repeat="subledger in visible_list">
+			<td>[[subledger.name]]</td>
+			<td><a href="" ng-click="view_ledger_details(subledger)">View Subledgers</a></td>
+			<!-- <td><a href="" ng-click="edit_subledger(subledger, ledger_details)">Edit</a></td>
+			<td><a href="" ng-click="delete_subledger(subledger)">Delete</a></td> -->
+		</tr>
+	</table>
+	<p ng-hide="ledger_details.sub_ledgers.length > 0">No subledgers</p>	
+	<div ng-show="ledger_details.sub_ledgers.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

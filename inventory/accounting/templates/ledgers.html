@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %} Ledgers {% endblock title%}
+{% block body_id %}ledgers{% endblock %}
+{% block controller %} ng-controller="LedgerController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_ledger.html' %}                  
+{% endblock %}
+{% block content %}
+	<h2> Ledgers </h2>
+	<button ng-click="create_ledger()" class="create_new">Create</button>
+	<div class="search">
+		<label>Search Ledgers</label>
+		<input type="text" name="ledger_name" ng-model="ledger_name" ng-change="get_ledger_list('search_ledger')" >
+		<p class="error_msg">[[no_ledger_msg]]</p>
+	</div>
+	<table ng-show="ledgers.length > 0" class="table list_table">
+		<tr>
+			<th>Name</th>
+			<th>View Subledgers</th>
+			<!-- <th>Edit</th>
+			<th>Delete</th> -->
+		</tr>
+		<tr ng-repeat="ledger in visible_list">
+			<td>[[ledger.name]]</td>
+			<td><a href="" ng-click="view_ledger_details(ledger)">View Subledgers</a></td>
+			<!-- <td><a href="" ng-click="edit_ledger_details(ledger)">Edit</a></td>
+			<td><a href="" ng-click="delete_ledger(ledger)">Delete</a></td> -->
+		</tr>
+	</table>
+	<div ng-show="ledgers.length > 0 ">
+		{% include 'pagination_div.html' %}
+	</div>	
+{% endblock content %}

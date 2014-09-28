@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block body_id %}inventory_item{% endblock %}
+{% block title %} Item {% endblock title%}
+{% block controller %} ng-controller="ItemController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_product.html' %}
+	{% include 'add_vat.html' %}
+	{% include 'add_brand.html' %}    
+{% endblock %}
+
+{% block content %}
+	<h2> Add Item </h2>
+	<div class="form_container">
+		<form name="item_form">
+			<div class="control">
+				<label>Item Name</label>
+				<input type="text" ng-model="item.name" />
+			</div>
+			<div class="control">
+				<label>Product</label>
+				<input type="text" ng-model="product_name" ng-change="get_products()" ng-click="selected_product_flag=true;"/>
+				<div class="search_list" ng-show="selected_product_flag">
+					<div class="search_list_item" ng-click="selected_product_flag=false" ng-show="selected_product_flag" ng-hide="!selected_product_flag">
+						<span><a href="" ng-click="new_product()">Create New</a></span>
+					</div>
+					<div ng-repeat="product in products" class="search_list_item" ng-click="select_product_details(product)">
+						<span>[[product.name]] - [[product.category_name]]</span>
+					</div>
+				</div>
+			</div>
+			<div class="control">
+				<label>Brand</label>
+				<input type="text" ng-model="brand_name" ng-change="get_brands()" ng-click="select_brand_flag=true"/>
+				<div class="search_list" ng-show="select_brand_flag">
+					<div class="search_list_item" ng-click="select_brand_flag=false" ng-show="select_brand_flag" ng-hide="!select_brand_flag">
+						<span><a href="" ng-click="new_brand()">Create New</a></span>
+					</div>
+					<div ng-repeat="brand in brands" class="search_list_item" ng-click="select_brand_details(brand)">
+						<span>[[brand.name]]</span>
+					</div>
+				</div>
+			</div>
+			<div class="control">
+				<label>Vat Type</label>
+				<input type="text" ng-model="vat_type" ng-change="get_vat_list()" ng-click="selected_vat_flag=true"/>
+				<div ng-show="selected_vat_flag" class="search_list">
+					<div class="search_list_item" ng-click="selected_vat_flag=false" ng-show="selected_vat_flag" ng-hide="!selected_vat_flag">
+						<span><a href="" ng-click="new_vat()">Create New</a></span>
+					</div>
+					<div ng-repeat="vat in vat_list" class="search_list_item" ng-click="select_vat_details(vat)">
+						<span>[[vat.vat_name]]</span>
+					</div>
+				</div>
+			</div>
+			<div class="control">
+				<label>Cess</label>
+				<input type="text" ng-model="item.cess"/>
+			</div>
+			<div class="control">
+				<label>Size</label>
+				<input type="text" ng-model="item.size"/>
+			</div>
+			<div class="control">
+				<label>Barcode</label>
+				<input type="text" ng-model="item.barcode"/>
+			</div>
+			<div class="control">
+				<label>Description</label>
+				<textarea ng-model="item.description"></textarea>
+			</div>
+			<div class="control">
+				<label>Offer quantity</label>
+				<input type="text" ng-model="item.offer_quantity"/>
+				<p> <br />(Price will be converted to whole sale price if quantity is above the offer quantity at the time of sales) </p>
+
+			</div>
+			<div class="button_control">
+				<p class="error_msg">[[no_product_msg]]</p>
+				<p class="error_msg">[[no_brand_msg]]</p>
+				<p class="error_msg">[[no_vat_msg]]</p>
+				<p class="error_msg">[[validate_item_error_msg]]</p>
+				<input type="submit" value="Save" ng-click="save_item()">
+				<input type="submit" value="Cancel" ng-click="hide_popup()">
+			</div>
+		</form>
+	</div>
+{% endblock %}

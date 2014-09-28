@@ -1,0 +1,17 @@
+<div class="form_container single_column_container" id="add_vat">
+	<form name="vat_form">
+		<div class="control">
+			<label>Vat Type</label>
+			<input type="text" ng-model="vat.name"/>
+		</div>
+		<div class="control">
+			<label>Tax Percentage</label>
+			<input type="text" ng-model="vat.tax_percentage"/>
+		</div>
+		<div class="button_control">
+			<p class="error_msg">[[validate_vat_error_msg]]</p>
+			<input type="submit" value="Create" ng-click="save_vat()">
+			<input type="submit" value="Cancel" ng-click="hide_popup()">
+		</div>
+	</form>
+</div>

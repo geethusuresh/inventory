@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %} Bank Book {% endblock title%}
+{% block body_id %}bank_book{% endblock %}
+{% block controller %} ng-controller="BankBookController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block content %}
+ <script>
+	$(function() {
+	$( "#start_date" ).datepicker();
+	$( "#end_date" ).datepicker();
+	});
+</script>
+	<h2> Bank Book </h2>
+	<div class="form_container single_column_container">
+		<form>
+			<div class="control">
+				<label>Start Date </label>
+				<input type="text" id="start_date" ng-model="start_date" readonly>
+			</div>
+			<div class="control">
+				<label>End Date </label>
+				<input type="text" id="end_date" ng-model="end_date" readonly>
+			</div>
+			<div class="button_control">
+				<button ng-click="view_bank_book()">View</button>
+				<button ng-click="generate_pdf()" >Generate PDF</button>
+			</div>
+			<p class="error_msg">[[validate_error_msg]]</p>
+		</form>		
+	</div>
+	<table ng-show="bank_entries.length > 0" class="table list_table">
+		<tr>
+			<th>#</th>
+			<th>Date</th>
+			<th>Ref No</th>
+			<th>Debit Ledger</th>
+			<th>Credit Ledger</th>
+			<th>Debit Amount</th>
+			<th>Credit Amount</th>
+		</tr>
+		<tr ng-repeat="ledger_entry in bank_entries">
+			<td>[[ledger_entry.count]]</td>
+			<td>[[ledger_entry.date]]</td>
+			<td>[[ledger_entry.transaction_ref]]</td>
+			<td>[[ledger_entry.debit_ledger]]</td>
+			<td>[[ledger_entry.credit_ledger]]</td>
+			<td>[[ledger_entry.debit_ledger_debit]]</td>
+			<td>[[ledger_entry.credit_ledger_credit]]</td>			
+		</tr>
+	</table>
+
+{% endblock content %}	

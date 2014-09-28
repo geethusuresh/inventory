@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body_id %}ledgers_tree{% endblock %}
+{% block title %} Ledgers {% endblock title%}
+{% block controller %} ng-controller="LedgerTreeController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+{% block dialogue_popup %}
+	{% include 'add_ledger.html' %}                  
+{% endblock %}
+{% block extrahead %}
+	<script type="text/ng-template" id="ledger_renderer.html">		
+        <a href="" class="shrink" ng-click="toggle_ledger_view($event, ledger)" >+</a>
+        <span>[[ledger.name]]</span>
+        <a ng-click="add_subledger(ledger)"> New </a>
+        
+        <ul>
+        	<li ng-repeat="ledger in ledger.subledgers" ng-include = "'ledger_renderer.html'" >
+        	 </li>
+    	</ul>
+	</script>
+{% endblock %}
+{% block content %}
+	<h2> Ledgers </h2>
+	<button ng-click="create_ledger()" class="create_new">Create</button>
+	<p ng-hide="ledgers.length > 0">No ledgers</p>
+	<div class="tree_view">
+	    <ul>
+	        <li ng-repeat="ledger in ledgers" ng-include="'ledger_renderer.html'" ></li>
+	    </ul>
+	</div>		
+
+{% endblock content %}

@@ -1,0 +1,514 @@
+/********** common styles *************/
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%
+}
+ul li ul {
+	display: block;
+    height: 0;
+    overflow: hidden;
+}
+select {
+	border: 1px solid #C3C3C3;
+}
+option {
+	border-left: 1px solid #C3C3C3;
+	border-right: 1px solid #C3C3C3;
+	padding: 5px;
+}
+#dialogue_popup_container {
+	display: none;
+	position: fixed;
+	width: 100%;
+}
+#dialogue_popup {
+	height: auto;
+	border-radius: 15px 15px 15px 15px;
+	border: 2px solid #707070;
+	margin: 40px auto auto!important;
+	z-index: 2;
+	position: relative;
+	background-color: #FFFFFF;
+	display: none;
+	overflow: hidden;
+	padding-bottom: 20px;
+	width: 80%;
+	padding: 1%;
+}
+#dialogue_popup form {
+	width: auto;
+}
+.form_container .control {
+	float: left;
+    height: auto;
+    width: 30%;
+    padding: 10px 5px;
+    position: relative;
+}
+.form_container .button_control {
+	float: right;
+    text-align: center;
+    width: 50%;
+    margin-bottom: 30px;
+}
+
+.control input[type="text"], .control textarea, .control input[type="password"]{
+	height: 35px;
+	padding: 5px;
+	float: left;
+	display: block;
+	width: 65%;
+	border: 1px solid #C3C3C3;
+}
+.form_container .control textarea {
+	height: 100px;
+}
+.form_container .control label{
+	height: 30px;
+	padding: 5px;
+	float: left;
+	display: block;
+	width: 35%;
+}
+#overlay {
+	display: none;
+	z-index: 3;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 0.5;
+}
+#popup_overlay {
+	display: none;
+	z-index: 1;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: #000000;
+	opacity: 0.5;	
+}
+.spinner {
+	background: url('../images/ajax-loader.gif') no-repeat;
+	width: 16px;
+	height: 16px;
+	z-index: 3;
+	margin: auto;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	display: none;
+}
+.container {
+	width: 100%;
+	padding: 0px !important;
+	height: 100%;
+}
+.clear {
+	clear: both;
+}
+footer p{
+	text-align: center;
+}
+footer {
+	bottom: 0;
+    text-align: center;
+    width: 100%;
+}
+.content {
+	float: left;
+	width: 100%;
+	min-height: 400px;
+}
+.right_container {
+	float: left;
+	width: 20%;
+	height: 100%;
+	background-color: #333333;
+	opacity: 0.7;
+	position: fixed;
+	right: 0px;
+	color: #FFFFFF;
+}
+.error_msg {
+	color: #FF0000;
+	font-weight: bold;
+}
+
+h2 {
+	text-align: center;
+	color: #707070;
+	width: 80%;
+	margin-top: 65px;
+}
+.create_new {
+	display: block;
+	padding: 10px;
+	color: #FFFFFF;
+	background-color: #707070;
+	font-weight: bold;
+	float: right;
+	margin-right: 25%;
+}
+.list_table{
+	width: 75%;
+	margin: 25px auto auto auto;
+}
+.rules {
+	width: 100% !important;
+	margin-bottom: 20px;
+}
+.rules td {
+	border-right: 1px solid #C3C3C3;
+}
+.rules input{
+	border: none;
+	width: 100%;
+	height: 100%;
+}
+.table-striped > tbody > tr:nth-child(2n+1) > td > input {
+    background-color: #F9F9F9;
+}
+.tree_view ul{
+	list-style: none;
+}
+.tree_view li{
+	padding: 10px;
+}
+.tree_view .expand, .tree_view .shrink {
+	border: 1px solid #707070;
+    border-radius: 10px;
+    display: block;
+    float: left;
+    font-weight: bold;
+    height: 22px;
+    text-align: center;
+    text-decoration: none;
+    width: 20px;
+}
+.tree_view span{
+	padding: 10px;
+	font-weight: bold;
+	color: #707070000000;
+}
+
+.username {
+	color: #FFFFFF;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.form_container {
+	width: 100%;
+}
+
+input[type="submit"], input[type="button"] , button{
+	padding: 5px;
+	background-color: #707070 !important;
+	color: #FFFFFF;
+	border: 1px solid #C3C3C3;
+}
+.wide_form {
+	width: 95%;
+	margin: auto;
+	margin-top: 20px;
+}
+.wide_form .control input[type="text"]{
+	width: 50%;
+}
+.wide_form .payment_mode {
+	width: 50% !important;
+	float: left;
+}
+.payment_mode label {
+	width: 20% !important;	
+	float: left;
+	margin-top: 11px;
+}
+.payment_mode .control {
+	width: 70%;
+}
+.payment_mode .control label{
+	font-weight: normal;
+	margin-top: -2px;
+}
+.payment_mode .control input[type="radio"]{
+	float: left;
+}
+hr{
+	width: 100%;
+	display: block;
+	clear: both;
+}
+.search_list {
+	background-color: #FFFFFF;
+    border: 1px solid #C3C3C3;
+    position: absolute;
+    width: 46%;
+    border-bottom: none;
+    right: 0;
+    top: 80%;
+    width: 69%;
+    z-index: 1;
+}
+td .search_list {
+	background-color: #FFFFFF;
+    border: 1px solid #C3C3C3;
+    position: relative;
+    width: 46%;
+    border-bottom: none;
+    right: 0;
+    top: 80%;
+    width: 120%;
+}
+.wide_list {
+	width: 300% !important;
+}
+.search_list_item {
+	border-bottom: 1px solid #C3C3C3;
+    padding: 5px;
+}
+
+.wide_label_container label {
+	width: 70% !important;
+}
+.wide_label_container input {
+	width: 30% !important;
+}
+.stock_view_container, .ledger_balance_container {
+	position: absolute;
+	width: 80%;
+	border: 1px solid red;
+	left: 10%;
+	border-radius: 10px;
+	margin-top: -10px;
+	z-index: 3;
+	background-color: #FFFFFF;
+	border: 2px solid #C3C3C3;
+}
+
+.stock_search_button, .ledger_balance_search_button {
+	background-color: #707070;
+	color: #FFFFFF;
+	padding: 10px;
+	position: absolute;
+	top: 100%;
+	cursor: pointer;
+	border: 1px solid #FFFFFF;
+	border-top: 0px;
+	border-radius: 15px;
+	z-index: 2;
+}
+.ledger_balance_search_button {
+	left: 10%;
+}
+.stock_view, .ledger_balance {
+	padding-bottom: 30px;
+	margin-top: -100%;
+}
+
+.open_search {
+	background-image: url('../images/up-arrow-small.png');
+	background-repeat: no-repeat;
+	background-position: 45px 25px;
+}
+.closed_search {
+	background-image: url('../images/down-arrow-small.png');
+	background-repeat: no-repeat;
+	background-position: 45px 25px;
+}
+.shop_details {
+	width: 40%;
+	margin: auto;
+	margin-top: 15%;
+	color: #FFFFFF;
+	background-color: #C3C3C3;
+	font-weight: bold;
+	padding: 30px;
+}
+
+/************************** common styles end ***********/
+/************** Login page  and create user styles**************/
+.login, .create_user {
+	width: 20%;
+	float: right;
+	margin: 10% 10% 0 0;
+}
+.create_user {
+	float: left;
+    margin-left: 5%;
+    margin-top: 3%;
+    width: 35%;
+}
+
+.sub_heading {
+	color: #12569A;
+	padding: 0px 0px 10px 0px;
+	border-bottom: 1px solid #12569A;
+}
+
+.login form, .create_user .field_set {
+	display: block;
+	width: 95%;
+	float: right;
+}
+
+.login label, .create_user label {
+	width: 39%;
+	height: 30px;
+}
+.login input, .create_user input {
+	width: 58%;
+	height: 30px;
+}
+.login input[type="submit"], .create_user input[type="submit"] {
+	border: none;
+	background-color: #12569A;
+	width: 20%;
+	float: right;
+	padding: 2px;
+	border: 1px solid #D6D4D2;
+	color: #FFFFFF;
+}
+
+
+/************ Login page style send ***************/
+
+/******************* Menu Styles ***************/
+
+.menu {
+	width: 100%;
+}
+
+.menu ul {
+	display: block;
+	list-style: none;
+}
+
+.menu ul li {
+	min-height: 30px;
+	padding: 5px;
+}
+.menu ul li a{
+	color: #FFFFFF;
+	text-decoration: none;
+	font-size: 15px;
+}
+
+.menu ul li ul {
+	display: block;
+	height: 0px;
+	overflow: hidden;
+}
+.menu_toggler {
+	position: absolute;
+	width: 23px;
+	height: 18px;
+	color: #FFFFFF;
+	font-weight: bold;
+	cursor: pointer;
+	top: 50%;
+	z-index: 2;
+}
+.open {
+	background: url('../images/arrow4.png') no-repeat;	
+}
+.closed {
+	background: url('../images/arrow3.png') no-repeat;	
+}
+.logout_button {
+	background: url('../images/gnome_logout.png') no-repeat;
+	width: 22px;
+	height: 22px;
+	text-indent: -9999;
+	display: block;
+	float: right;
+}
+.user_details {
+	padding: 20px;
+}
+.menu span a {
+	padding-left: 15px;
+	outline: none;
+}
+.submenu_open {
+	background: url('../images/arrow.png') no-repeat;
+	background-position: 0px 7px;
+}
+.submenu_closed {
+	background: url('../images/arrow1.png') no-repeat;
+}
+
+.search {
+	clear: both;
+    display: block;
+    margin: auto;
+    padding: 20px;
+    width: 74%;
+}
+.search input{
+	width: 75%;
+	border: 1px solid #C3C3C3;
+	padding: 10px;
+	height: 40px;
+}
+.search label{
+	width: 15%;
+	padding: 10px;
+	height: 40px;
+}
+
+
+/******************* End menu styles ************/
+
+/******************* Payment styles ************/
+.single_column_container {
+	margin: auto;
+	width: 35%;
+	min-height: 100%
+}
+.single_column_container .control {
+	width: 100%;
+}
+
+.label_radio{
+	width: 13% !important;
+}
+.single_column_container input[type="radio"]{
+	float: left;
+	width: 5%;
+}
+.single_column_container select{
+	float: left;
+	display: block;
+	width: 50%;
+}
+
+.payment_vendor_list{
+  	background-color: #FFFFFF;
+    border: 1px solid #ADD8E6;
+    position: absolute;
+    width: 17%;
+    margin-top: 2%;
+    margin-left: 15%;
+    border-bottom: none;
+}
+.payment_vendor_item {
+	border-bottom: 1px solid #ADD8E6;
+    padding: 5px;
+}
+/******************* End payment styles ************/
+
+
+
+/******************** pagination styling ********/
+
+.page {
+	width: 80%;
+	margin: auto;
+}
+
+/****************** end pagination styling ********/

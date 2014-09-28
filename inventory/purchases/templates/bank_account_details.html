@@ -1,0 +1,22 @@
+<div class="form_container single_column_container" id="bank_account_details">
+	<h2 ng-show="other_bank_account">Create Bank Ledger</h2>
+	<div class="control" ng-hide="other_bank_account">
+		<label>Bank Accounts</label>
+		<select ng-model="bank_account" ng-options="bank_account.id as bank_account.name for bank_account in bank_accounts"></select>
+	</div>
+	<div class="control" ng-hide="other_bank_account">
+		
+		<a href="" ng-click="other_bank_account=true">New Bank Account</a>
+	</div>
+	<div class="control" ng-show="other_bank_account">
+		<label>Bank Account Name</label>
+		<input type="text" ng-model="bank_account_name">
+	</div>
+	
+	<div class="button_control">
+		<p class="error_msg">[[bank_account_error]]</p>
+		<input type="submit" ng-click="add_bank_account_details()" value="Ok" ng-hide="other_bank_account"/>
+		<input type="submit" ng-click="create_new_bank_acount()" value="Create" ng-show="other_bank_account"/>
+		<input type="submit" ng-click="hide_popup()" value="Cancel" />
+	</div>
+</div>

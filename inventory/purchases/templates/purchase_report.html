@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block body_id %}purchase_report{% endblock %}
+{% block title %} Purchase Report {% endblock title%}
+{% block controller %} ng-controller="PurchaseReportController" ng-init="init('{{csrf_token}}')"{% endblock controller %}
+
+{% block extrahead %}
+	<script>
+		$(function() {
+			$('#start_date').datepicker();
+			$('#end_date').datepicker();
+		});
+	</script>
+{% endblock %}
+{% block content %}
+	
+	<h2> Purchase Report</h2>
+	<div class="form_container single_column_container">
+		<div class="control" >
+			<label>Start Date</label>
+			<input type="text" name="start_date" id="start_date">
+		</div>
+		<div class="control" >
+			<label>End Date</label>
+			<input type="text" name="end_date" id="end_date">
+		</div>
+		<div class="button_control" >
+			<p class="error_msg">[[report_mesg]]</p>
+			<input type="submit" value="View" ng-click="generate_report('view')">
+			<input type="submit" value="Generate Report" ng-click="generate_report()">
+		</div>
+	</div>
+	<br>
+	<table ng-show="purchase_details.length > 0" class="table list_table">
+		<tr>
+			<th>Sl.No</th>
+			<th>Date</th>
+			<th>Invoice No</th>
+			<th>Supplier</th>
+			<th>Payment Mode</th>
+			<th>Amount</th>
+			<th>Discount</th>
+			<th>Tax</th>
+			<th>Transaction Reference No</th>
+		</tr>
+		<tr ng-repeat="purchase in purchase_details">
+			<td>[[$index+1]]</td>
+			<td>[[purchase.date]]</td>
+			<td>[[purchase.invoice]]</td>
+			<td>[[purchase.supplier]]</td>
+			<td>[[purchase.payment_mode]]</td>
+			<td>[[purchase.grant_total]]</td>
+			<td>[[purchase.discount]]</td>
+			<td>[[purchase.tax]]</td>
+			<td>[[purchase.transaction_ref]]</td>
+		</tr>
+	</table>
+{% endblock content%}
